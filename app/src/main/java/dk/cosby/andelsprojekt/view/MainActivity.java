@@ -20,7 +20,6 @@ import dk.cosby.andelsprojekt.model.BlockUtil;
 import dk.cosby.andelsprojekt.model.Blockchain;
 import dk.cosby.andelsprojekt.model.Transaction;
 import dk.cosby.andelsprojekt.model.User;
-import dk.cosby.andelsprojekt.model.UserType;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,9 +32,9 @@ public class MainActivity extends AppCompatActivity {
         Blockchain blockchain = new Blockchain();
 
         //Skaber argumenter til block
-        User cosby = new User("cosby", "cosbypass", UserType.TEST);
+        User cosby = new User("cosby", "cosbypass");
 
-        User nicklas = new User("nicklas", "nicklaspass", UserType.TEST);
+        User nicklas = new User("nicklas", "nicklaspass");
 
         Transaction cosToNick = new Transaction(cosby, nicklas, 150);
 
