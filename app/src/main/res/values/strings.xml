@@ -7,6 +7,9 @@
     <string name="opret_bruger">Opret Bruger</string>
     <string name="email_text_error_message">E-mailen ikke godkendt, kontrollér venligst om du har indtastet den korrekt.</string>
     <string name="password_text_error_message">Kodeordet skal indeholde:\n- mindst 8 karaktere\n- mindst ét lille bogstav\n- mindst ét stort bogstav\n- mindst ét tegn eller tal</string>
+    <string name="navn">Navn</string>
+    <string name="efternavn">Efternavn</string>
+    <string name="gentag_password">Gentag password</string>
 
 
 </resources>

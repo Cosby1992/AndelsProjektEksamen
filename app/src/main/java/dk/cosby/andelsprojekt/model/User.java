@@ -12,6 +12,7 @@ import java.util.Date;
 
 public class User {
 
+
     private static final String TAG = "User";
 
     private int user_id;

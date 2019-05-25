@@ -1,11 +1,10 @@
 package dk.cosby.andelsprojekt.view;
 
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -13,8 +12,6 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -22,6 +19,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 import java.util.regex.Pattern;
 
@@ -38,9 +36,9 @@ public class CreateUserActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
 
     private CreateUserViewModel viewModel;
-    private TextView emailErrorText, passwordErrorText;
-    private EditText email, password;
-    private Button create_user;
+    private TextInputLayout emailInputLayoutText, passwordInputLayoutText;
+    private TextInputEditText email, password, name, lastname;
+    private Button createUserButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,11 +50,15 @@ public class CreateUserActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        emailErrorText = (TextView) findViewById(R.id.tv_email_error_text);
-        passwordErrorText = (TextView) findViewById(R.id.tv_password_error_text);
-        email = (EditText) findViewById(R.id.et_email_create_user);
-        password = (EditText) findViewById(R.id.et_password_create_user);
-        create_user = (Button) findViewById(R.id.btn_create_user);
+        emailInputLayoutText = (TextInputLayout) findViewById(R.id.til_email);
+        passwordInputLayoutText = (TextInputLayout) findViewById(R.id.til_password);
+        email = (TextInputEditText) findViewById(R.id.et_email);
+        password = (TextInputEditText) findViewById(R.id.et_password);
+
+        name = (TextInputEditText) findViewById(R.id.tiet_name);
+        lastname = (TextInputEditText) findViewById(R.id.tiet_lastname);
+
+        createUserButton = (Button) findViewById(R.id.btn_create_user);
 
 
 
@@ -70,11 +72,6 @@ public class CreateUserActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(s != null) {
                     viewModel.setCurrentUserEmail(s.toString());
-                    if(isEmailValid(s.toString())) {
-                        emailErrorText.setVisibility(View.GONE);
-                    } else {
-                        emailErrorText.setVisibility(View.VISIBLE);
-                    }
                 }
             }
 
@@ -94,11 +91,6 @@ public class CreateUserActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(s != null) {
                     viewModel.setCurrentUserPassword(s.toString());
-                    if(isPasswordValid(s.toString())) {
-                        passwordErrorText.setVisibility(View.GONE);
-                    } else {
-                        passwordErrorText.setVisibility(View.VISIBLE);
-                    }
                 }
             }
 
@@ -108,7 +100,7 @@ public class CreateUserActivity extends AppCompatActivity {
             }
         });
 
-        create_user.setOnClickListener(new View.OnClickListener() {
+        createUserButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.i(TAG, "onClick: \nUser Value = " + viewModel.getCurrentUserEmail().getValue() + "\n" +
@@ -118,7 +110,7 @@ public class CreateUserActivity extends AppCompatActivity {
 
                 if(isEmailValid(viewModel.getCurrentUserEmail().getValue()) && isPasswordValid(viewModel.getCurrentUserPassword().getValue())) {
 
-                    mAuth.createUserWithEmailAndPassword(viewModel.getCurrentUserEmail().getValue(),
+                    mAuth.createUserWithEmailAndPassword(viewModel.getCurrentUserEmail().getValue().trim(),
                             viewModel.getCurrentUserPassword().getValue())
                             .addOnCompleteListener(CreateUserActivity.this, new OnCompleteListener<AuthResult>() {
                                 @Override
@@ -127,6 +119,17 @@ public class CreateUserActivity extends AppCompatActivity {
                                         // Sign in success, update UI with the signed-in user's information
                                         Log.d(TAG, "addUserToFirebase: 'success' Brugeren blev tilføjet til firebase");
                                         FirebaseUser user = mAuth.getCurrentUser();
+
+                                        UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
+                                                .setDisplayName(name.toString().trim() + " " + lastname.toString().trim())
+                                                .build();
+
+                                        user.updateProfile(profileUpdate);
+
+                                        Log.i(TAG, "FIREBASE USER: \n" +
+                                                "display name: " + user.getDisplayName() + "\n" +
+                                                "number: " + user.getPhoneNumber() + "\n" +
+                                                "id: " + user.getUid());
 
                                         Intent goToMainActivity = new Intent(getApplicationContext(), MainActivity.class);
                                         startActivity(goToMainActivity);
