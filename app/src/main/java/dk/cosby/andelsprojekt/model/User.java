@@ -10,38 +10,33 @@ import java.util.Date;
  * @author Cosby
  */
 
-public class User implements FirebaseAuthenticationAdapter {
+public class User {
 
     private static final String TAG = "User";
 
     private int user_id;
+    private String navn;
+    private String efternavn;
     private String emailAdresse;
     private String password;
-    private String timestamp;
-    private UserType type;
+
 
     //no-arg constructor
     public User() {
+        navn = "";
+        efternavn = "";
         emailAdresse = "";
         password = "";
-        type = UserType.TEST;
 
         Log.i(TAG, "Et nyt User object blev skabt ved brug af no-arg constructoren");
     }
 
     //Constructor (brugt under udvikling)
-    public User(String emailAdresse, String password, UserType type) {
+    public User(String emailAdresse, String password) {
         this.emailAdresse = emailAdresse;
         this.password = password;
-        this.type = type;
-        timestamp = new Date().toString();
 
         Log.i(TAG, "Et nyt User object blev skabt");
-    }
-
-    @Override
-    public void addUserToDB(String email, String password) {
-
     }
 
     /////////////////////////////// getters and setters ////////////////////////////////////
@@ -55,6 +50,22 @@ public class User implements FirebaseAuthenticationAdapter {
         this.user_id = user_id;
     }
 
+    public String getNavn() {
+        return navn;
+    }
+
+    public void setNavn(String navn) {
+        this.navn = navn;
+    }
+
+    public String getEfternavn() {
+        return efternavn;
+    }
+
+    public void setEfternavn(String efternavn) {
+        this.efternavn = efternavn;
+    }
+
     public String getEmailAdresse() {
         return emailAdresse;
     }
@@ -62,30 +73,14 @@ public class User implements FirebaseAuthenticationAdapter {
     public void setEmailAdresse(String emailAdresse) {
         this.emailAdresse = emailAdresse;
         Log.i(TAG, "User email blev sat til: " + emailAdresse);
-    }
 
+    }
     public String getPassword() {
         return password;
     }
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(String timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    public UserType getType() {
-        return type;
-    }
-
-    public void setType(UserType type) {
-        this.type = type;
     }
 
 }
