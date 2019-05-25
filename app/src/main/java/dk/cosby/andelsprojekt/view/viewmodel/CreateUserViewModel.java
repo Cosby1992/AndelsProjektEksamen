@@ -18,11 +18,15 @@ public class CreateUserViewModel extends ViewModel {
 
     private MutableLiveData<String> currentUserEmail = new MutableLiveData<>();
     private MutableLiveData<String> currentUserPassword = new MutableLiveData<>();
+    private MutableLiveData<String> currentUserName = new MutableLiveData<>();
+    private MutableLiveData<String> currentUserLastname = new MutableLiveData<>();
     private User user = new User();
 
     public CreateUserViewModel() {
         currentUserEmail.setValue(user.getEmailAdresse());
         currentUserPassword.setValue(user.getPassword());
+        currentUserName.setValue(user.getNavn());
+        currentUserLastname.setValue(user.getEfternavn());
     }
 
     //Foretag ændring i modellen
@@ -37,6 +41,18 @@ public class CreateUserViewModel extends ViewModel {
         currentUserPassword.setValue(user.getPassword());
     }
 
+    //Foretag ændring i modellen
+    public void setCurrentUserName(String userName){
+        user.setNavn(userName);
+        currentUserName.setValue(user.getNavn());
+    }
+
+    //Foretag ændring i modellen
+    public void setCurrentUserLastname(String userLastname){
+        user.setEfternavn(userLastname);
+        currentUserPassword.setValue(user.getEfternavn());
+    }
+
     public MutableLiveData<String> getCurrentUserEmail() {
         currentUserEmail.setValue(user.getEmailAdresse());
         return currentUserEmail;
@@ -48,12 +64,12 @@ public class CreateUserViewModel extends ViewModel {
     }
 
 //    public void observeEmail(LifecycleOwner lifeCycleOwner, Observer<String> stringObserver) {
-//        currentUserEmail.observe(lifeCycleOwner, stringObserver);
-//    }
-//
-//    public void observePassword(LifecycleOwner lifeCycleOwner, Observer<String> stringObserver) {
-//        currentUserPassword.observe(lifeCycleOwner, stringObserver);
-//    }
+//////        currentUserEmail.observe(lifeCycleOwner, stringObserver);
+//////    }
+//////
+//////    public void observePassword(LifecycleOwner lifeCycleOwner, Observer<String> stringObserver) {
+//////        currentUserPassword.observe(lifeCycleOwner, stringObserver);
+//////    }
 
 
 }

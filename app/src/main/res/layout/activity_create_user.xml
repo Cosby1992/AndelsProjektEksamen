@@ -1,64 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView android:layout_height="match_parent"
     android:layout_width="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".view.CreateUserActivity">
 
     <LinearLayout
         android:orientation="vertical"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".view.CreateUserActivity">
+        android:padding="40dp">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/opret_bruger"
+            android:gravity="center"
             android:textSize="35dp"
-            android:textColor="@color/colorPrimary"
-            android:padding="15dp"/>
+            android:textColor="@color/colorPrimary"/>
 
 
-        <EditText
-            android:id="@+id/et_email_create_user"
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="100dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:textSize="25sp"
-            android:inputType="textEmailAddress"
-            android:hint="@string/e_mail"/>
+            android:textColorHint="@color/colorPrimary">
 
-        <TextView
-            android:id="@+id/tv_email_error_text"
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/tiet_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/navn"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:textColor="@color/TextErrorMessage"
-            android:text="@string/email_text_error_message"
-            android:visibility="gone"/>
+            android:textColorHint="@color/colorPrimary">
 
-        <EditText
-            android:id="@+id/et_password_create_user"
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/tiet_lastname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/efternavn"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/til_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:textSize="25sp"
-            android:inputType="textPassword"
-            android:hint="@string/password" />
+            android:textColorHint="@color/colorPrimary">
 
-        <TextView
-            android:id="@+id/tv_password_error_text"
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/et_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/e_mail"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/til_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:textColor="@color/TextErrorMessage"
-            android:text="@string/password_text_error_message"
-            android:visibility="gone"/>
+            android:textColorHint="@color/colorPrimary">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/et_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:hint="@string/password"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/colorPrimary">
+
+            <android.support.design.widget.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/gentag_password"/>
+
+        </android.support.design.widget.TextInputLayout>
 
 
         <Button

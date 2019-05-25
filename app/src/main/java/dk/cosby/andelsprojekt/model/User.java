@@ -10,7 +10,7 @@ import java.util.Date;
  * @author Cosby
  */
 
-public class User implements FirebaseAuthenticationAdapter {
+public class User  {
 
     private static final String TAG = "User";
 
@@ -39,10 +39,6 @@ public class User implements FirebaseAuthenticationAdapter {
         Log.i(TAG, "Et nyt User object blev skabt");
     }
 
-    @Override
-    public void addUserToDB(String email, String password) {
-
-    }
 
     /////////////////////////////// getters and setters ////////////////////////////////////
 
