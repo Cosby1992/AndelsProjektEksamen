@@ -63,6 +63,16 @@ public class CreateUserViewModel extends ViewModel {
         return currentUserPassword;
     }
 
+    public MutableLiveData<String> getCurrentUserName() {
+        currentUserName.setValue(user.getNavn());
+        return currentUserName;
+    }
+
+    public MutableLiveData<String> getCurrentUserLastname() {
+        currentUserLastname.setValue(user.getEfternavn());
+        return currentUserLastname;
+    }
+
 //    public void observeEmail(LifecycleOwner lifeCycleOwner, Observer<String> stringObserver) {
 //////        currentUserEmail.observe(lifeCycleOwner, stringObserver);
 //////    }
