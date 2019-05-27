@@ -48,9 +48,19 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        ////////////////////////////// initialisere klassevariabler ///////////////////////////////
+        //Initialisere ViewModel
         viewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
 
         mAuth = FirebaseAuth.getInstance();
+
+
+        /////////////////////////////// initialisering fra xml ////////////////////////////////////
+        email = (TextInputEditText) findViewById(R.id.tiet_email_login);
+        password = (TextInputEditText) findViewById(R.id.tiet_password_login);
+        sendToCreateUser = (TextView) findViewById(R.id.tv_send_to_create_user);
+        login = (Button) findViewById(R.id.btn_login);
+        loginProgress = (ProgressBar) findViewById(R.id.pb_login_progress);
 
         email = findViewById(R.id.tiet_email_login);
         password = findViewById(R.id.tiet_password_login);
@@ -58,6 +68,8 @@ public class LoginActivity extends AppCompatActivity {
         login = findViewById(R.id.btn_login);
         loginProgress = findViewById(R.id.pb_login_progress);
 
+
+        //En Textwatcher som ændrer email værdien i viewModel når email teksten bliver ændret.
         email.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -77,6 +89,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        //En textwatcher som ændrer password værdien i viewModel når password teksten bliver ændret.
         password.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -98,21 +111,27 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    //Laver en knap til create user
     public void createNewUserButton(View view) {
         Intent createUserActivity = new Intent(getApplicationContext(), CreateUserActivity.class);
         startActivity(createUserActivity);
     }
 
+    //Når login knappen trykkes
     public void loginOnClick(View view) {
 
-
+        //Når der er blevet klikket login så kommer progress cirklen op, og login knappen fjernes.
         loginProgress.setVisibility(View.VISIBLE);
         login.setVisibility(View.GONE);
         sendToCreateUser.setVisibility(View.GONE);
 
+        //Tjekker om emailen er null, og om email feltet er tomt.
         if(viewModel.getCurrentUserEmail().getValue() != null && viewModel.getCurrentUserPassword().getValue() != null) {
             if (!viewModel.getCurrentUserEmail().getValue().isEmpty() && !viewModel.getCurrentUserPassword().getValue().isEmpty()) {
 
+                //Forsøger at logge ind med de tastede værdier, email og password gennem Firebasen.
+                //Hvis den er succesfuld logger den ind og viser mainActivity.
+                //Hvis den fejler kommer der en fejl meddelelse
                 mAuth.signInWithEmailAndPassword(viewModel.getCurrentUserEmail().getValue().trim(), viewModel.getCurrentUserPassword().getValue())
                         .addOnCompleteListener(this, task -> {
                             if (task.isSuccessful()) {
