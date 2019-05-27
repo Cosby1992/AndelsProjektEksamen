@@ -41,6 +41,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorPrimaryWhite"
+                android:inputType="textPersonName"
                 android:hint="@string/navn"/>
 
         </android.support.design.widget.TextInputLayout>
@@ -54,6 +55,7 @@
                 android:id="@+id/tiet_lastname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="textPersonName"
                 android:textColor="@color/colorPrimaryWhite"
                 android:hint="@string/efternavn"/>
 
@@ -68,6 +70,7 @@
                 android:id="@+id/tiet_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
                 android:textColor="@color/colorPrimaryWhite"
                 android:hint="@string/e_mail"/>
 
@@ -103,6 +106,13 @@
 
         </android.support.design.widget.TextInputLayout>
 
+        <ProgressBar
+            android:id="@+id/pb_opret_bruger_progressbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="40dp"
+            android:visibility="gone"/>
 
         <Button
             android:id="@+id/btn_create_user"

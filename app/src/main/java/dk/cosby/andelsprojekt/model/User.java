@@ -1,7 +1,10 @@
 package dk.cosby.andelsprojekt.model;
 
 import android.util.Log;
+
+import java.io.Serializable;
 import java.util.Date;
+import java.util.function.IntBinaryOperator;
 import java.util.regex.Pattern;
 
 /**
