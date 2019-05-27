@@ -97,6 +97,7 @@
                 android:id="@+id/tiet_reapeat_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="textPassword"
                 android:textColor="@color/colorPrimaryWhite"
                 android:hint="@string/gentag_password"/>
 
