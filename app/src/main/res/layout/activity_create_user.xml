@@ -12,14 +12,14 @@
         android:layout_height="wrap_content"
         android:padding="35dp">
 
-        <!--
+
         <ImageView
-            android:layout_width="195dp"
-            android:layout_height="164dp"
+            android:layout_width="244dp"
+            android:layout_height="216dp"
             android:layout_gravity="center"
             android:src="@drawable/user_icon"
-            />
-         -->
+            android:padding="20dp"/>
+
 
         <TextView
             android:layout_width="match_parent"
