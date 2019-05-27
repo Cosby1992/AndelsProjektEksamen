@@ -113,7 +113,7 @@ public class LoginActivity extends AppCompatActivity {
         if(viewModel.getCurrentUserEmail().getValue() != null && viewModel.getCurrentUserPassword().getValue() != null) {
             if (!viewModel.getCurrentUserEmail().getValue().isEmpty() && !viewModel.getCurrentUserPassword().getValue().isEmpty()) {
 
-                mAuth.signInWithEmailAndPassword(viewModel.getCurrentUserEmail().getValue(), viewModel.getCurrentUserPassword().getValue())
+                mAuth.signInWithEmailAndPassword(viewModel.getCurrentUserEmail().getValue().trim(), viewModel.getCurrentUserPassword().getValue())
                         .addOnCompleteListener(this, task -> {
                             if (task.isSuccessful()) {
                                 loginProgress.setVisibility(View.GONE);
