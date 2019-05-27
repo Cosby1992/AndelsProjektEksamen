@@ -54,12 +54,19 @@ public class LoginActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
+
         /////////////////////////////// initialisering fra xml ////////////////////////////////////
         email = (TextInputEditText) findViewById(R.id.tiet_email_login);
         password = (TextInputEditText) findViewById(R.id.tiet_password_login);
         sendToCreateUser = (TextView) findViewById(R.id.tv_send_to_create_user);
         login = (Button) findViewById(R.id.btn_login);
         loginProgress = (ProgressBar) findViewById(R.id.pb_login_progress);
+
+        email = findViewById(R.id.tiet_email_login);
+        password = findViewById(R.id.tiet_password_login);
+        sendToCreateUser = findViewById(R.id.tv_send_to_create_user);
+        login = findViewById(R.id.btn_login);
+        loginProgress = findViewById(R.id.pb_login_progress);
 
 
         //En Textwatcher som ændrer email værdien i viewModel når email teksten bliver ændret.

@@ -4,7 +4,6 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
-import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -12,6 +11,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -38,6 +38,7 @@ public class CreateUserActivity extends AppCompatActivity {
 
     private CreateUserViewModel viewModel;
     private TextInputEditText email, password, reapeatPassword, name, lastname;
+    private ProgressBar opretBrugerProgressbar;
     private Button createUserButton;
 
     @Override
@@ -52,14 +53,15 @@ public class CreateUserActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         /////////////////////////////// initialisering fra xml ////////////////////////////////////
-        email = (TextInputEditText) findViewById(R.id.tiet_email);
-        password = (TextInputEditText) findViewById(R.id.tiet_password);
-        reapeatPassword = (TextInputEditText) findViewById(R.id.tiet_reapeat_password);
+        email = findViewById(R.id.tiet_email);
+        password = findViewById(R.id.tiet_password);
+        reapeatPassword = findViewById(R.id.tiet_reapeat_password);
 
-        name = (TextInputEditText) findViewById(R.id.tiet_name);
-        lastname = (TextInputEditText) findViewById(R.id.tiet_lastname);
+        name = findViewById(R.id.tiet_name);
+        lastname = findViewById(R.id.tiet_lastname);
 
-        createUserButton = (Button) findViewById(R.id.btn_create_user);
+        createUserButton = findViewById(R.id.btn_create_user);
+        opretBrugerProgressbar = findViewById(R.id.pb_opret_bruger_progressbar);
 
 
 
@@ -148,6 +150,8 @@ public class CreateUserActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                hideButtonShowProgress();
+
                 //Info udskrift i loggen
                 Log.i(TAG, "onClick: \nUser Value = " + viewModel.getCurrentUserEmail().getValue() + "\n" +
                         "isEmailValid = " + viewModel.isEmailValid().getValue() + "\n" +
@@ -189,6 +193,7 @@ public class CreateUserActivity extends AppCompatActivity {
                                         startActivity(mainActivity);
 //                                updateUI(user);
                                     } else { // Hvis oprettelsen ikke var successfuld
+                                        showButtonHideProgress();
                                         Log.w(TAG, "addUserToFirebase: 'failure' brugeren blev ikke tilføjet til Firebase", task.getException());
                                         Toast.makeText(CreateUserActivity.this, "Oprettelse Fejlede - tjek dine informationer og prøv igen.",
                                                 Toast.LENGTH_LONG).show();
@@ -201,24 +206,31 @@ public class CreateUserActivity extends AppCompatActivity {
                                 }
                             });
                 } else if (!viewModel.getCurrentUserPassword().getValue().equals(reapeatPassword.getText().toString())){
+                    showButtonHideProgress();
                     Toast.makeText(CreateUserActivity.this, "Passwords er ikke ens!", Toast.LENGTH_SHORT).show();
                     Log.w(TAG, "onClick: Password og repeat password er ikke ens.");
                 } else if (!viewModel.isEmailValid().getValue()){
+                    showButtonHideProgress();
                     Toast.makeText(CreateUserActivity.this, "Der er noget galt med din E-mail adresse", Toast.LENGTH_SHORT).show();
                     Log.w(TAG, "onClick: E-mailen overholder ikke regex i isEmailValid metoden");
                 } else if (viewModel.getCurrentUserPassword().getValue().length() < 8){
+                    showButtonHideProgress();
                     Toast.makeText(CreateUserActivity.this, "Password skal være minimum 8 karaktere langt", Toast.LENGTH_SHORT).show();
                     Log.w(TAG, "onClick: Password er mindre end 8 karaktere langt");
                 } else if (!Pattern.matches(".*[A-Z].*", viewModel.getCurrentUserPassword().getValue())){
+                    showButtonHideProgress();
                     Toast.makeText(CreateUserActivity.this, "Password skal indeholde et stort bogstav", Toast.LENGTH_SHORT).show();
                     Log.w(TAG, "onClick: Password indeholder ikke et stort bogstav");
                 } else if (!Pattern.matches(".*[a-z].*", viewModel.getCurrentUserPassword().getValue())){
+                    showButtonHideProgress();
                     Toast.makeText(CreateUserActivity.this, "Password skal indeholde et lille bogstav", Toast.LENGTH_SHORT).show();
                     Log.w(TAG, "onClick: Password indeholder ikke et lille bogstav");
                 } else if (!viewModel.isPasswordValid().getValue()){
+                    showButtonHideProgress();
                     Toast.makeText(CreateUserActivity.this, "Password skal indeholde et tegn eller tal", Toast.LENGTH_SHORT).show();
                     Log.w(TAG, "onClick: Password indeholder ikke et tegn eller tal");
                 } else {
+                    showButtonHideProgress();
                     Toast.makeText(CreateUserActivity.this, "Dine indtastninger blev ikke godkendt af en ukendt årsag. Prøv venligst igen.", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -249,6 +261,16 @@ public class CreateUserActivity extends AppCompatActivity {
 //
 //        viewModel.observePassword(this, passwordStringObserver);
 
+    }
+
+    private void showButtonHideProgress(){
+        opretBrugerProgressbar.setVisibility(View.GONE);
+        createUserButton.setVisibility(View.VISIBLE);
+    }
+
+    private void hideButtonShowProgress(){
+        opretBrugerProgressbar.setVisibility(View.VISIBLE);
+        createUserButton.setVisibility(View.GONE);
     }
 
 }

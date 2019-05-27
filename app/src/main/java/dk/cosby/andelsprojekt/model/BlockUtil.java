@@ -8,6 +8,8 @@ package dk.cosby.andelsprojekt.model;
  */
 
 import android.util.Log;
+
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.Date;
 
@@ -28,7 +30,7 @@ public class BlockUtil {
             MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
 
             //byte array'et hashes
-            byte[] hashBytes = messageDigest.digest(input.getBytes("UTF-8"));
+            byte[] hashBytes = messageDigest.digest(input.getBytes(StandardCharsets.UTF_8));
 
             //StringBuffer instans der kommer til at indeholde den hexadecimale værdi af hashbytes.
             StringBuffer hexStringBuffer = new StringBuffer();
@@ -101,11 +103,7 @@ public class BlockUtil {
             startString.append("0");
         }
 
-        if(hash.startsWith(startString.toString())){
-            return true;
-        } else {
-            return false;
-        }
+        return hash.startsWith(startString.toString());
     }
 
 }
