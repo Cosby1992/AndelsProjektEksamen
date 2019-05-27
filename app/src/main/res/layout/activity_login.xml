@@ -38,6 +38,7 @@
                 android:id="@+id/tiet_email_login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
                 android:textColor="@color/colorPrimaryWhite"
                 android:hint="@string/e_mail"/>
         </android.support.design.widget.TextInputLayout>
