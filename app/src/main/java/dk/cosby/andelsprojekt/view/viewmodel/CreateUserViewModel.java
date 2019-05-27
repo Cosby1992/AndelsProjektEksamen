@@ -20,6 +20,10 @@ public class CreateUserViewModel extends ViewModel {
     private MutableLiveData<String> currentUserPassword = new MutableLiveData<>();
     private MutableLiveData<String> currentUserName = new MutableLiveData<>();
     private MutableLiveData<String> currentUserLastname = new MutableLiveData<>();
+
+    private MutableLiveData<Boolean> currentIsEmailValid = new MutableLiveData<>();
+    private MutableLiveData<Boolean> currentIsPasswordValid = new MutableLiveData<>();
+
     private User user = new User();
 
     public CreateUserViewModel() {
@@ -27,17 +31,22 @@ public class CreateUserViewModel extends ViewModel {
         currentUserPassword.setValue(user.getPassword());
         currentUserName.setValue(user.getNavn());
         currentUserLastname.setValue(user.getEfternavn());
+
+        currentIsEmailValid.setValue(false);
+        currentIsPasswordValid.setValue(false);
     }
 
     //Foretag ændring i modellen
     public void setCurrentUserEmail(String userEmail){
         user.setEmailAdresse(userEmail);
+        currentIsEmailValid.setValue(user.isEmailValid(userEmail));
         currentUserEmail.setValue(user.getEmailAdresse());
     }
 
     //Foretag ændring i modellen
     public void setCurrentUserPassword(String userPassword){
         user.setPassword(userPassword);
+        currentIsPasswordValid.setValue(user.isPasswordValid(userPassword));
         currentUserPassword.setValue(user.getPassword());
     }
 
@@ -45,6 +54,14 @@ public class CreateUserViewModel extends ViewModel {
     public void setCurrentUserName(String userName){
         user.setNavn(userName);
         currentUserName.setValue(user.getNavn());
+    }
+
+    public MutableLiveData<Boolean> isEmailValid() {
+            return currentIsEmailValid;
+    }
+
+    public MutableLiveData<Boolean> isPasswordValid() {
+        return currentIsPasswordValid;
     }
 
     //Foretag ændring i modellen

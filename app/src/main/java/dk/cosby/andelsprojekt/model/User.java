@@ -2,6 +2,7 @@ package dk.cosby.andelsprojekt.model;
 
 import android.util.Log;
 import java.util.Date;
+import java.util.regex.Pattern;
 
 /**
  * Denne klasse indeholder al brugerinformation samt en constructor til at oprette brugere.
@@ -10,7 +11,7 @@ import java.util.Date;
  * @author Cosby
  */
 
-public class User {
+public class User implements EmailAndPasswordVerification {
 
 
     private static final String TAG = "User";
@@ -36,12 +37,21 @@ public class User {
     public User(String emailAdresse, String password) {
         this.emailAdresse = emailAdresse;
         this.password = password;
-
         Log.i(TAG, "Et nyt User object blev skabt");
     }
 
-    /////////////////////////////// getters and setters ////////////////////////////////////
 
+    @Override
+    public boolean isEmailValid(String email) {
+        return Pattern.matches("(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])", email);
+    }
+
+    @Override
+    public boolean isPasswordValid(String password) {
+        return Pattern.matches("(?-i)(?=^.{8,}$)((?!.*\\s)(?=.*[A-Z])(?=.*[a-z]))((?=(.*\\d){1,})|(?=(.*\\W){1,}))^.*$", password);
+    }
+
+    /////////////////////////////// getters and setters ////////////////////////////////////
 
     public int getUser_id() {
         return user_id;
@@ -83,5 +93,6 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
 
 }

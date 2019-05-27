@@ -150,13 +150,13 @@ public class CreateUserActivity extends AppCompatActivity {
 
                 //Info udskrift i loggen
                 Log.i(TAG, "onClick: \nUser Value = " + viewModel.getCurrentUserEmail().getValue() + "\n" +
-                        "isEmailValid = " + isEmailValid(viewModel.getCurrentUserEmail().getValue()) + "\n" +
-                        "isPasswordValid = " + isPasswordValid(viewModel.getCurrentUserPassword().getValue()));
+                        "isEmailValid = " + viewModel.isEmailValid().getValue() + "\n" +
+                        "isPasswordValid = " + viewModel.isPasswordValid().getValue());
 
                 // tjekker om E-mail og password overholder de givne regler samt om password og
                 // repeat password er ens
-                if(isEmailValid(viewModel.getCurrentUserEmail().getValue())
-                        && isPasswordValid(viewModel.getCurrentUserPassword().getValue())
+                if(viewModel.isEmailValid().getValue()
+                        && viewModel.isPasswordValid().getValue()
                         && viewModel.getCurrentUserPassword().getValue().equals(reapeatPassword.getText().toString())) {
 
                     // Forsøger at tilføje bruger til database med email og password gennem FirebaseAuth instans.
@@ -203,7 +203,7 @@ public class CreateUserActivity extends AppCompatActivity {
                 } else if (!viewModel.getCurrentUserPassword().getValue().equals(reapeatPassword.getText().toString())){
                     Toast.makeText(CreateUserActivity.this, "Passwords er ikke ens!", Toast.LENGTH_SHORT).show();
                     Log.w(TAG, "onClick: Password og repeat password er ikke ens.");
-                } else if (!isEmailValid(viewModel.getCurrentUserEmail().getValue())){
+                } else if (!viewModel.isEmailValid().getValue()){
                     Toast.makeText(CreateUserActivity.this, "Der er noget galt med din E-mail adresse", Toast.LENGTH_SHORT).show();
                     Log.w(TAG, "onClick: E-mailen overholder ikke regex i isEmailValid metoden");
                 } else if (viewModel.getCurrentUserPassword().getValue().length() < 8){
@@ -215,7 +215,7 @@ public class CreateUserActivity extends AppCompatActivity {
                 } else if (!Pattern.matches(".*[a-z].*", viewModel.getCurrentUserPassword().getValue())){
                     Toast.makeText(CreateUserActivity.this, "Password skal indeholde et lille bogstav", Toast.LENGTH_SHORT).show();
                     Log.w(TAG, "onClick: Password indeholder ikke et lille bogstav");
-                } else if (!isPasswordValid(viewModel.getCurrentUserPassword().getValue())){
+                } else if (!viewModel.isPasswordValid().getValue()){
                     Toast.makeText(CreateUserActivity.this, "Password skal indeholde et tegn eller tal", Toast.LENGTH_SHORT).show();
                     Log.w(TAG, "onClick: Password indeholder ikke et tegn eller tal");
                 } else {
@@ -249,35 +249,6 @@ public class CreateUserActivity extends AppCompatActivity {
 //
 //        viewModel.observePassword(this, passwordStringObserver);
 
-    }
-
-
-
-
-
-    /**
-     * Bruger en regular expression til at finde ud af om en email overholder den
-     * normale opbygning for en email.
-     *
-     * @param email email der skal tjekkes
-     * @return true hvis emailen overholder RFC-5322
-     */
-    public static boolean isEmailValid(String email) {
-        return Pattern.matches("(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])", email);
-    }
-
-    /**
-     * Bruger en regular expression til at finde ud af om et password overholder følgene regler:
-     *  1. passwordet er mindst 8 karakterer langt
-     *  2. passwordet indeholder mindst 1 stort bogstav
-     *  3. passwordet indeholder mindst 1 lille bogstav
-     *  4. passwordet indeholder mindst 1 tal/tegn
-     *
-     * @param password password der skal tjekkes
-     * @return true hvis passwordet overholder ovenstående regler
-     */
-    public static boolean isPasswordValid(String password) {
-        return Pattern.matches("(?-i)(?=^.{8,}$)((?!.*\\s)(?=.*[A-Z])(?=.*[a-z]))((?=(.*\\d){1,})|(?=(.*\\W){1,}))^.*$", password);
     }
 
 }
