@@ -19,11 +19,10 @@ public class User implements EmailAndPasswordVerification {
 
     private static final String TAG = "User";
 
-    private int user_id;
+    private String user_id;
     private String navn;
     private String efternavn;
     private String emailAdresse;
-    private String password;
 
 
     //no-arg constructor
@@ -31,15 +30,13 @@ public class User implements EmailAndPasswordVerification {
         navn = "";
         efternavn = "";
         emailAdresse = "";
-        password = "";
 
         Log.i(TAG, "Et nyt User object blev skabt ved brug af no-arg constructoren");
     }
 
     //Constructor (brugt under udvikling)
-    public User(String emailAdresse, String password) {
+    public User(String emailAdresse) {
         this.emailAdresse = emailAdresse;
-        this.password = password;
         Log.i(TAG, "Et nyt User object blev skabt");
     }
 
@@ -72,11 +69,13 @@ public class User implements EmailAndPasswordVerification {
 
     /////////////////////////////// getters and setters ////////////////////////////////////
 
-    public int getUser_id() {
+
+
+    public String getUser_id() {
         return user_id;
     }
 
-    public void setUser_id(int user_id) {
+    public void setUser_id(String user_id) {
         this.user_id = user_id;
     }
 
@@ -105,13 +104,4 @@ public class User implements EmailAndPasswordVerification {
         Log.i(TAG, "User email blev sat til: " + emailAdresse);
 
     }
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-
 }

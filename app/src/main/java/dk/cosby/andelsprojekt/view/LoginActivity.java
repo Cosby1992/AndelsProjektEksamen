@@ -121,9 +121,7 @@ public class LoginActivity extends AppCompatActivity {
     public void loginOnClick(View view) {
 
         //Når der er blevet klikket login så kommer progress cirklen op, og login knappen fjernes.
-        loginProgress.setVisibility(View.VISIBLE);
-        login.setVisibility(View.GONE);
-        sendToCreateUser.setVisibility(View.GONE);
+        showProgressBar();
 
         //Tjekker om emailen er null, og om email feltet er tomt.
         if(viewModel.getCurrentUserEmail().getValue() != null && viewModel.getCurrentUserPassword().getValue() != null) {
@@ -132,12 +130,10 @@ public class LoginActivity extends AppCompatActivity {
                 //Forsøger at logge ind med de tastede værdier, email og password gennem Firebasen.
                 //Hvis den er succesfuld logger den ind og viser mainActivity.
                 //Hvis den fejler kommer der en fejl meddelelse
-                mAuth.signInWithEmailAndPassword(viewModel.getCurrentUserEmail().getValue().trim(), viewModel.getCurrentUserPassword().getValue())
+                viewModel.login()
                         .addOnCompleteListener(this, task -> {
                             if (task.isSuccessful()) {
-                                loginProgress.setVisibility(View.GONE);
-                                login.setVisibility(View.VISIBLE);
-                                sendToCreateUser.setVisibility(View.VISIBLE);
+                                showLoginButton();
                                 // Sign in success, update UI with the signed-in user's information
                                 Log.d(TAG, "signInWithEmail:success");
 
@@ -146,12 +142,10 @@ public class LoginActivity extends AppCompatActivity {
 
                                 //updateUI(user);
                             } else {
-                                loginProgress.setVisibility(View.GONE);
-                                login.setVisibility(View.VISIBLE);
-                                sendToCreateUser.setVisibility(View.VISIBLE);
+                                showLoginButton();
                                 // If sign in fails, display a message to the user.
                                 Log.w(TAG, "signInWithEmail:failure", task.getException());
-                                Toast.makeText(LoginActivity.this, "Login fejlede.",
+                                Toast.makeText(LoginActivity.this, "Login fejlede",
                                         Toast.LENGTH_SHORT).show();
 
                             }
@@ -159,18 +153,27 @@ public class LoginActivity extends AppCompatActivity {
                             // ...
                         });
             } else {
-                loginProgress.setVisibility(View.GONE);
-                login.setVisibility(View.VISIBLE);
-                sendToCreateUser.setVisibility(View.VISIBLE);
+                showLoginButton();
                 Toast.makeText(LoginActivity.this, "Du har ikke udfyldt email eller password feltet.", Toast.LENGTH_SHORT).show();
             }
         } else {
-            loginProgress.setVisibility(View.GONE);
-            login.setVisibility(View.VISIBLE);
-            sendToCreateUser.setVisibility(View.VISIBLE);
+            showLoginButton();
             Toast.makeText(LoginActivity.this, "Du har ikke udfyldt email eller password feltet.", Toast.LENGTH_SHORT).show();
         }
 
 
     }
+
+    private void showProgressBar(){
+        loginProgress.setVisibility(View.VISIBLE);
+        login.setVisibility(View.GONE);
+        sendToCreateUser.setVisibility(View.GONE);
+    }
+
+    private void showLoginButton(){
+        loginProgress.setVisibility(View.GONE);
+        login.setVisibility(View.VISIBLE);
+        sendToCreateUser.setVisibility(View.VISIBLE);
+    }
+
 }

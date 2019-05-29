@@ -2,28 +2,20 @@ package dk.cosby.andelsprojekt.model;
 
 public class Account {
 
-    private int accountID;
-    private String userID;
     private double balance;
 
     public Account() {
+        balance = 0;
     }
 
-    public int getAccountID() {
-        return accountID;
+    public void addFunds(double amount){
+        balance += amount;
     }
 
-    public void setAccountID(int accountID) {
-        this.accountID = accountID;
+    public void subtractFunds(double amount){
+        balance -= amount;
     }
 
-    public String getUserID() {
-        return userID;
-    }
-
-    public void setUserID(String userID) {
-        this.userID = userID;
-    }
 
     public double getBalance() {
         return balance;

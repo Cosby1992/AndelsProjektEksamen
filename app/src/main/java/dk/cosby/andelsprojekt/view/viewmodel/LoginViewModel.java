@@ -3,6 +3,9 @@ package dk.cosby.andelsprojekt.view.viewmodel;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+
 import dk.cosby.andelsprojekt.model.User;
 
 public class LoginViewModel extends ViewModel {
@@ -10,10 +13,15 @@ public class LoginViewModel extends ViewModel {
     private MutableLiveData<String> currentUserEmail = new MutableLiveData<>();
     private MutableLiveData<String> currentUserPassword = new MutableLiveData<>();
     private User user = new User();
+    private LoginFirebaseRepository firebaseRepository = new LoginFirebaseRepository();
 
     public LoginViewModel() {
-        currentUserEmail.setValue(user.getEmailAdresse());
-        currentUserPassword.setValue(user.getPassword());
+        currentUserEmail.setValue("");
+        currentUserPassword.setValue("");
+    }
+
+    public Task<AuthResult> login(){
+        return firebaseRepository.login(currentUserEmail.getValue(), currentUserPassword.getValue());
     }
 
     public MutableLiveData<String> getCurrentUserEmail() {
@@ -27,13 +35,11 @@ public class LoginViewModel extends ViewModel {
     }
 
     public MutableLiveData<String> getCurrentUserPassword() {
-        currentUserPassword.setValue(user.getPassword());
         return currentUserPassword;
     }
 
     public void setCurrentUserPassword(String userPassword) {
-        user.setPassword(userPassword);
-        this.currentUserPassword.setValue(user.getPassword());
+        this.currentUserPassword.setValue(userPassword);
     }
 
 }

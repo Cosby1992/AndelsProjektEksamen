@@ -1,5 +1,7 @@
 package dk.cosby.andelsprojekt.view;
 
+import android.arch.lifecycle.Lifecycle;
+import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -15,11 +17,12 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.regex.Pattern;
 
@@ -35,6 +38,7 @@ public class CreateUserActivity extends AppCompatActivity {
     private static final String TAG = "CreateUserActivity";
 
     private FirebaseAuth mAuth;
+    private FirebaseFirestore database;
 
     private CreateUserViewModel viewModel;
     private TextInputEditText email, password, reapeatPassword, name, lastname;
@@ -51,6 +55,7 @@ public class CreateUserActivity extends AppCompatActivity {
         viewModel = ViewModelProviders.of(this).get(CreateUserViewModel.class);
 
         mAuth = FirebaseAuth.getInstance();
+        database = FirebaseFirestore.getInstance();
 
         /////////////////////////////// initialisering fra xml ////////////////////////////////////
         email = findViewById(R.id.tiet_email);
@@ -145,6 +150,8 @@ public class CreateUserActivity extends AppCompatActivity {
             }
         });
 
+
+
         //Når opret bruger knappes klikkes
         createUserButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -163,41 +170,39 @@ public class CreateUserActivity extends AppCompatActivity {
                         && viewModel.isPasswordValid().getValue()
                         && viewModel.getCurrentUserPassword().getValue().equals(reapeatPassword.getText().toString())) {
 
+
                     // Forsøger at tilføje bruger til database med email og password gennem FirebaseAuth instans.
                     // Når dette er forsøgt undersøges det om forsøget var succesfuld eller ikke.
-                    mAuth.createUserWithEmailAndPassword(viewModel.getCurrentUserEmail().getValue().trim(),
-                            viewModel.getCurrentUserPassword().getValue())
+                    viewModel.createUserAuth()
                             .addOnCompleteListener(CreateUserActivity.this, new OnCompleteListener<AuthResult>() {
 
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
-                                        // Sign in success, update UI with the signed-in user's information
-                                        Log.d(TAG, "addUserToFirebase: 'success' Brugeren blev tilføjet til firebase");
                                         FirebaseUser user = mAuth.getCurrentUser();
 
-                                        String displayName = viewModel.getCurrentUserName().getValue().trim() + " " + viewModel.getCurrentUserLastname().getValue().trim();
+                                        viewModel.setCurrentUserId(user.getUid());
 
-                                        UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
-                                                .setDisplayName(displayName)
-                                                .build();
+                                        viewModel.updateUserAuth().addOnCompleteListener(CreateUserActivity.this, new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if(task.isSuccessful()){
+                                                    Intent mainActivity = new Intent(getApplicationContext(), MainActivity.class);
+                                                    startActivity(mainActivity);
+                                                } else {
+                                                    showButtonHideProgress();
+                                                    Toast.makeText(CreateUserActivity.this, "Brugeren blev oprettet, men navn og efternavn blev ikke gemt i databasen.",
+                                                            Toast.LENGTH_LONG).show();
+                                                }
+                                            }
+                                        });
 
-                                        user.updateProfile(profileUpdate);
 
-                                        Log.i(TAG, "FIREBASE USER: \n" +
-                                                "display name: " + user.getDisplayName() + "\n" +
-                                                "number: " + user.getPhoneNumber() + "\n" +
-                                                "id: " + user.getUid());
 
-                                        Intent mainActivity = new Intent(getApplicationContext(), MainActivity.class);
-                                        startActivity(mainActivity);
-//                                updateUI(user);
                                     } else { // Hvis oprettelsen ikke var successfuld
                                         showButtonHideProgress();
-                                        Log.w(TAG, "addUserToFirebase: 'failure' brugeren blev ikke tilføjet til Firebase", task.getException());
-                                        Toast.makeText(CreateUserActivity.this, "Oprettelse Fejlede - tjek dine informationer og prøv igen.",
+                                        Toast.makeText(CreateUserActivity.this, "Oprettelse Fejlede - tjek dine informationer eller din internetforbindelse og prøv igen.",
                                                 Toast.LENGTH_LONG).show();
-//                                updateUI(null);
                                     }
 
 
@@ -262,6 +267,7 @@ public class CreateUserActivity extends AppCompatActivity {
 //        viewModel.observePassword(this, passwordStringObserver);
 
     }
+
 
     private void showButtonHideProgress(){
         opretBrugerProgressbar.setVisibility(View.GONE);

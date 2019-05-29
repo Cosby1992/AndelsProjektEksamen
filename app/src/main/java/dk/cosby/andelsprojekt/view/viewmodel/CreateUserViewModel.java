@@ -1,9 +1,19 @@
 package dk.cosby.andelsprojekt.view.viewmodel;
 
-import android.arch.lifecycle.LifecycleOwner;
+
+import android.app.Activity;
 import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModel;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.util.Log;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+
+import java.util.concurrent.Executor;
 
 import dk.cosby.andelsprojekt.model.User;
 
@@ -16,6 +26,9 @@ import dk.cosby.andelsprojekt.model.User;
  */
 public class CreateUserViewModel extends ViewModel {
 
+    private final String TAG = "CreateUserViewModel";
+
+    private MutableLiveData<String> currentUserId = new MutableLiveData<>();
     private MutableLiveData<String> currentUserEmail = new MutableLiveData<>();
     private MutableLiveData<String> currentUserPassword = new MutableLiveData<>();
     private MutableLiveData<String> currentUserName = new MutableLiveData<>();
@@ -25,15 +38,67 @@ public class CreateUserViewModel extends ViewModel {
     private MutableLiveData<Boolean> currentIsPasswordValid = new MutableLiveData<>();
 
     private User user = new User();
+    private CreateUserFirebaseRepository database = new CreateUserFirebaseRepository();
 
     public CreateUserViewModel() {
         currentUserEmail.setValue(user.getEmailAdresse());
-        currentUserPassword.setValue(user.getPassword());
+        currentUserPassword.setValue("");
         currentUserName.setValue(user.getNavn());
         currentUserLastname.setValue(user.getEfternavn());
 
         currentIsEmailValid.setValue(false);
         currentIsPasswordValid.setValue(false);
+
+    }
+
+    public Task<AuthResult> createUserAuth(){
+
+        Task<AuthResult> task = database.createUserAuth(currentUserEmail.getValue().trim(), currentUserPassword.getValue());
+
+        task.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, "saveUserAuth(String, String): 'Brugeren blev ikke gemt'");
+            }
+        });
+
+        return task;
+    }
+
+    public Task<Void> saveUserInFirestore(){
+
+        Task<Void> task = database.saveUserInFirestore(user);
+        task.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, "saveUserInFirestore(): 'Brugeren blev ikke gemt'");
+            }
+        });
+
+        return task;
+
+    }
+
+    public Task<Void> updateUserAuth(){
+
+        Task<Void> task = database.updateUserAuth(currentUserName.getValue(), currentUserLastname.getValue());
+        task.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, "saveUserInFirestore(): 'Brugeren blev ikke gemt'");
+            }
+        });
+
+        return task;
+
+    }
+
+
+    public void setCurrentUserId(String userId) {
+        if(userId != null && !userId.isEmpty()) {
+            user.setUser_id(userId);
+            currentUserId.setValue(user.getUser_id());
+        }
     }
 
     //Foretag ændring i modellen
@@ -45,9 +110,14 @@ public class CreateUserViewModel extends ViewModel {
 
     //Foretag ændring i modellen
     public void setCurrentUserPassword(String userPassword){
-        user.setPassword(userPassword);
         currentIsPasswordValid.setValue(user.isPasswordValid(userPassword));
-        currentUserPassword.setValue(user.getPassword());
+        currentUserPassword.setValue(userPassword);
+    }
+
+    //Foretag ændring i modellen
+    public void setCurrentUserLastname(String userLastname){
+        user.setEfternavn(userLastname);
+        currentUserPassword.setValue(user.getEfternavn());
     }
 
     //Foretag ændring i modellen
@@ -64,10 +134,9 @@ public class CreateUserViewModel extends ViewModel {
         return currentIsPasswordValid;
     }
 
-    //Foretag ændring i modellen
-    public void setCurrentUserLastname(String userLastname){
-        user.setEfternavn(userLastname);
-        currentUserPassword.setValue(user.getEfternavn());
+    public MutableLiveData<String> getCurrentUserId() {
+        currentUserId.setValue(user.getUser_id());
+        return currentUserId;
     }
 
     public MutableLiveData<String> getCurrentUserEmail() {
@@ -76,7 +145,6 @@ public class CreateUserViewModel extends ViewModel {
     }
 
     public MutableLiveData<String> getCurrentUserPassword() {
-        currentUserPassword.setValue(user.getPassword());
         return currentUserPassword;
     }
 

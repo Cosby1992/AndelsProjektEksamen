@@ -1,7 +1,11 @@
 package dk.cosby.andelsprojekt.view;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import dk.cosby.andelsprojekt.R;
+import dk.cosby.andelsprojekt.view.viewmodel.MainActivityViewModel;
 
 /**
  * Denne activity er applicationens "forside" eller "startskærm"
@@ -27,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
     private TextView statusText;
+
+    private MainActivityViewModel viewModel;
 
 
     @Override
@@ -62,15 +69,27 @@ public class MainActivity extends AppCompatActivity {
 
         statusText = findViewById(R.id.tv_status_text);
 
+        viewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
+
 
         if(user != null) {
-            statusText.setText(user.getEmail());
+            statusText.setText(user.getDisplayName());
         } else {
             statusText.setText("No user logged in");
         }
 
 
-
+//        final Observer<Double> balanceDoubleObserver = new Observer<Double>() {
+//            @Override
+//            public void onChanged(@Nullable Double aDouble) {
+//                if (aDouble != null) {
+//                    String showText = aDouble + " AC";
+//                    statusText.setText(showText);
+//                } else statusText.setText("Kunne ikke hente balance informationer.");
+//            }
+//        };
+//
+//        viewModel.observeCurrentAccountBalance(this, balanceDoubleObserver);
 
 
     }
