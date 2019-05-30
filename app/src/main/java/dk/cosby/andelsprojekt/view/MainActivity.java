@@ -9,6 +9,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -92,5 +94,12 @@ public class MainActivity extends AppCompatActivity {
 //        viewModel.observeCurrentAccountBalance(this, balanceDoubleObserver);
 
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
     }
 }

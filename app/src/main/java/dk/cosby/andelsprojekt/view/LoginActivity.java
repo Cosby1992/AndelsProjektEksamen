@@ -34,8 +34,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "LoginActivity";
 
-    private FirebaseAuth mAuth;
-
     private LoginViewModel viewModel;
     private TextInputEditText email, password;
     private TextView sendToCreateUser;
@@ -51,9 +49,6 @@ public class LoginActivity extends AppCompatActivity {
         ////////////////////////////// initialisere klassevariabler ///////////////////////////////
         //Initialisere ViewModel
         viewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
-
-        mAuth = FirebaseAuth.getInstance();
-
 
         /////////////////////////////// initialisering fra xml ////////////////////////////////////
         email = (TextInputEditText) findViewById(R.id.tiet_email_login);
@@ -162,6 +157,15 @@ public class LoginActivity extends AppCompatActivity {
         }
 
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (viewModel.isUserLoggedIn()){
+            Intent mainActivity = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(mainActivity);
+        }
     }
 
     private void showProgressBar(){
