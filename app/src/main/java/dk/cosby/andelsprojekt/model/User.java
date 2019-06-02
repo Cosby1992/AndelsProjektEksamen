@@ -1,10 +1,5 @@
 package dk.cosby.andelsprojekt.model;
 
-import android.util.Log;
-
-import java.io.Serializable;
-import java.util.Date;
-import java.util.function.IntBinaryOperator;
 import java.util.regex.Pattern;
 
 /**
@@ -33,14 +28,12 @@ public class User implements EmailAndPasswordVerification {
         emailAdresse = "";
         password = "";
 
-        Log.i(TAG, "Et nyt User object blev skabt ved brug af no-arg constructoren");
     }
 
     //Constructor (brugt under udvikling)
     public User(String emailAdresse, String password) {
         this.emailAdresse = emailAdresse;
         this.password = password;
-        Log.i(TAG, "Et nyt User object blev skabt");
     }
 
     /**
@@ -102,7 +95,6 @@ public class User implements EmailAndPasswordVerification {
 
     public void setEmailAdresse(String emailAdresse) {
         this.emailAdresse = emailAdresse;
-        Log.i(TAG, "User email blev sat til: " + emailAdresse);
 
     }
     public String getPassword() {
