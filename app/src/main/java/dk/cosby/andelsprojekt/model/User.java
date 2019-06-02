@@ -25,6 +25,7 @@ public class User implements EmailAndPasswordVerification {
         navn = "";
         efternavn = "";
         emailAdresse = "";
+
     }
 
     //Constructor (brugt under udvikling)
