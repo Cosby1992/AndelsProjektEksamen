@@ -1,22 +1,26 @@
 package dk.cosby.andelsprojekt.view.viewmodel;
 
 
-import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
-
-
-import dk.cosby.andelsprojekt.model.Account;
 
 public class MainActivityViewModel extends ViewModel {
 
-
-    private MutableLiveData<Double> currentAccountBalance = new MutableLiveData<>();
-    private Account account = new Account();
+    MainActivityFirebase firebase;
 
     public MainActivityViewModel() {
 
-        currentAccountBalance.setValue(account.getBalance());
+        firebase = new MainActivityFirebase();
 
+
+    }
+
+
+    public void makeInvestment(double amount){
+        firebase.makeInvestment(amount);
+    }
+
+    public void makeLoan(double amount){
+        firebase.makeLoan(amount);
     }
 
 

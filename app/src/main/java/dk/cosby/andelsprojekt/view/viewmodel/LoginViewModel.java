@@ -12,8 +12,9 @@ public class LoginViewModel extends ViewModel {
 
     private MutableLiveData<String> currentUserEmail = new MutableLiveData<>();
     private MutableLiveData<String> currentUserPassword = new MutableLiveData<>();
+
     private User user = new User();
-    private LoginFirebaseRepository firebaseRepository = new LoginFirebaseRepository();
+    private LoginFirebase firebaseRepository = new LoginFirebase();
 
     public LoginViewModel() {
         currentUserEmail.setValue("");
@@ -33,17 +34,19 @@ public class LoginViewModel extends ViewModel {
         return currentUserEmail;
     }
 
-    public void setCurrentUserEmail(String userEmail) {
-        user.setEmailAdresse(userEmail);
-        this.currentUserEmail.setValue(user.getEmailAdresse());
+    public void setCurrentUserEmail(String email) {
+        user.setEmailAdresse(email);
+        currentUserPassword.setValue(user.getEmailAdresse());
     }
+
+
 
     public MutableLiveData<String> getCurrentUserPassword() {
         return currentUserPassword;
     }
 
-    public void setCurrentUserPassword(String userPassword) {
-        this.currentUserPassword.setValue(userPassword);
+    public void setCurrentUserPassword(String password) {
+        currentUserPassword.setValue(password);
     }
 
 }

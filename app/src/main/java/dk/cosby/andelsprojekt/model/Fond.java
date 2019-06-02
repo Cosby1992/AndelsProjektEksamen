@@ -1,18 +1,22 @@
 package dk.cosby.andelsprojekt.model;
 
-public class Account {
+public class Fond {
 
     private double balance;
 
-    public Account() {
-        balance = 0;
+    public Fond() {
     }
 
-    public void addFunds(double amount){
+    public Fond(double balance) {
+        this.balance = balance;
+    }
+
+
+    public void add(double amount){
         balance += amount;
     }
 
-    public void subtractFunds(double amount){
+    public void subtract(double amount){
         balance -= amount;
     }
 

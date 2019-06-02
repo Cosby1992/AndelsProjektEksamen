@@ -1,21 +1,19 @@
 package dk.cosby.andelsprojekt.view.viewmodel;
 
 
-import android.app.Activity;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.util.Log;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 
-import java.util.concurrent.Executor;
+import java.util.ArrayList;
 
 import dk.cosby.andelsprojekt.model.User;
+import dk.cosby.andelsprojekt.model.observermodel.Addict;
+import dk.cosby.andelsprojekt.model.observermodel.Pusher;
 
 /**
  * Dette er en ViewModel til CreateUserActivity.
@@ -24,7 +22,7 @@ import dk.cosby.andelsprojekt.model.User;
  * @version 1.0
  * @author Cosby
  */
-public class CreateUserViewModel extends ViewModel {
+public class CreateUserViewModel extends ViewModel implements Pusher {
 
     private final String TAG = "CreateUserViewModel";
 
@@ -37,10 +35,14 @@ public class CreateUserViewModel extends ViewModel {
     private MutableLiveData<Boolean> currentIsEmailValid = new MutableLiveData<>();
     private MutableLiveData<Boolean> currentIsPasswordValid = new MutableLiveData<>();
 
+    private MutableLiveData<Boolean> everythingOk = new MutableLiveData<>();
+    private boolean[] allGoodArray = new boolean[3];
+
     private User user = new User();
-    private CreateUserFirebaseRepository database = new CreateUserFirebaseRepository();
+    private CreateUserFirebase database = new CreateUserFirebase();
 
     public CreateUserViewModel() {
+
         currentUserEmail.setValue(user.getEmailAdresse());
         currentUserPassword.setValue("");
         currentUserName.setValue(user.getNavn());
@@ -49,56 +51,80 @@ public class CreateUserViewModel extends ViewModel {
         currentIsEmailValid.setValue(false);
         currentIsPasswordValid.setValue(false);
 
+        everythingOk.setValue(false);
+
+        setCurrentUserId("midlertidigt id");
+
     }
 
-    public Task<AuthResult> createUserAuth(){
+    public void createUserAuth(){
+        database.createUserAuth(currentUserEmail.getValue().trim(), currentUserPassword.getValue())
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        allGoodArray[0] = task.isSuccessful();
+                        AuthResult result = task.getResult();
+                        currentUserId.setValue(result.getUser().getUid());
 
-        Task<AuthResult> task = database.createUserAuth(currentUserEmail.getValue().trim(), currentUserPassword.getValue());
+                        pushBoolArrayToAddicts(allGoodArray);
+                    }
+                });
+    }
 
-        task.addOnFailureListener(new OnFailureListener() {
+    public void saveUserInFirestore(){
+
+        database.saveUserInFirestore(user, currentUserId.getValue())
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d(TAG, "saveUserAuth(String, String): 'Brugeren blev ikke gemt'");
+            public void onComplete(@NonNull Task<Void> task) {
+                allGoodArray[1] = task.isSuccessful();
+                pushBoolArrayToAddicts(allGoodArray);
             }
         });
 
-        return task;
     }
 
-    public Task<Void> saveUserInFirestore(){
+    public void updateUserAuth(){
 
-        Task<Void> task = database.saveUserInFirestore(user);
-        task.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d(TAG, "saveUserInFirestore(): 'Brugeren blev ikke gemt'");
+        database.updateUserDisplayNameAuth(currentUserName.getValue(), currentUserLastname.getValue())
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        allGoodArray[2] = task.isSuccessful();
+                        pushBoolArrayToAddicts(allGoodArray);
+                    }
+                });
+    }
+
+    private boolean isAllGood(){
+        boolean result = true;
+        for(Boolean bool : allGoodArray){
+            if(!bool){
+                result = false;
             }
-        });
-
-        return task;
-
+        }
+        return result;
     }
 
-    public Task<Void> updateUserAuth(){
-
-        Task<Void> task = database.updateUserAuth(currentUserName.getValue(), currentUserLastname.getValue());
-        task.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d(TAG, "saveUserInFirestore(): 'Brugeren blev ikke gemt'");
-            }
-        });
-
-        return task;
-
+    public MutableLiveData<Boolean> getEverythingOk() {
+        return everythingOk;
     }
 
+    public MutableLiveData<String> getCurrentUserId() {
+        currentUserId.setValue(user.getUser_id());
+        return currentUserId;
+    }
 
     public void setCurrentUserId(String userId) {
         if(userId != null && !userId.isEmpty()) {
             user.setUser_id(userId);
             currentUserId.setValue(user.getUser_id());
         }
+    }
+
+    public MutableLiveData<String> getCurrentUserEmail() {
+        currentUserEmail.setValue(user.getEmailAdresse());
+        return currentUserEmail;
     }
 
     //Foretag ændring i modellen
@@ -108,10 +134,19 @@ public class CreateUserViewModel extends ViewModel {
         currentUserEmail.setValue(user.getEmailAdresse());
     }
 
+    public MutableLiveData<String> getCurrentUserPassword() {
+        return currentUserPassword;
+    }
+
     //Foretag ændring i modellen
     public void setCurrentUserPassword(String userPassword){
         currentIsPasswordValid.setValue(user.isPasswordValid(userPassword));
         currentUserPassword.setValue(userPassword);
+    }
+
+    public MutableLiveData<String> getCurrentUserLastname() {
+        currentUserLastname.setValue(user.getEfternavn());
+        return currentUserLastname;
     }
 
     //Foretag ændring i modellen
@@ -120,11 +155,20 @@ public class CreateUserViewModel extends ViewModel {
         currentUserPassword.setValue(user.getEfternavn());
     }
 
+
+
+    public MutableLiveData<String> getCurrentUserName() {
+        currentUserName.setValue(user.getNavn());
+        return currentUserName;
+    }
+
     //Foretag ændring i modellen
     public void setCurrentUserName(String userName){
         user.setNavn(userName);
         currentUserName.setValue(user.getNavn());
     }
+
+
 
     public MutableLiveData<Boolean> isEmailValid() {
             return currentIsEmailValid;
@@ -134,31 +178,27 @@ public class CreateUserViewModel extends ViewModel {
         return currentIsPasswordValid;
     }
 
-    public MutableLiveData<String> getCurrentUserId() {
-        currentUserId.setValue(user.getUser_id());
-        return currentUserId;
+    private ArrayList<Addict> addicts = new ArrayList<>();
+
+
+    @Override
+    public void becomeAddict(Addict addict) {
+        addicts.add(addict);
     }
 
-    public MutableLiveData<String> getCurrentUserEmail() {
-        currentUserEmail.setValue(user.getEmailAdresse());
-        return currentUserEmail;
+    @Override
+    public void goToRehab(Addict addict) {
+        addicts.remove(addict);
     }
 
-    public MutableLiveData<String> getCurrentUserPassword() {
-        return currentUserPassword;
+    @Override
+    public void pushBoolArrayToAddicts(boolean[] dope) {
+        for(Addict addict : addicts){
+            addict.onBoolArrayDopeRecieved(allGoodArray);
+        }
     }
 
-    public MutableLiveData<String> getCurrentUserName() {
-        currentUserName.setValue(user.getNavn());
-        return currentUserName;
-    }
-
-    public MutableLiveData<String> getCurrentUserLastname() {
-        currentUserLastname.setValue(user.getEfternavn());
-        return currentUserLastname;
-    }
-
-//    public void observeEmail(LifecycleOwner lifeCycleOwner, Observer<String> stringObserver) {
+    //    public void observeEmail(LifecycleOwner lifeCycleOwner, Observer<String> stringObserver) {
 //////        currentUserEmail.observe(lifeCycleOwner, stringObserver);
 //////    }
 //////

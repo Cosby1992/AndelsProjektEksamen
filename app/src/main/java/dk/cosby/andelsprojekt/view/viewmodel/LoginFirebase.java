@@ -3,29 +3,25 @@ package dk.cosby.andelsprojekt.view.viewmodel;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
 
-public class LoginFirebaseRepository {
+class LoginFirebase {
 
 
     private static final String TAG = "FIREBASE_REPOSITORY";
 
-    private FirebaseFirestore firestoreDB;
     private FirebaseAuth auth;
 
     //no-arg constructor
-    public LoginFirebaseRepository() {
-        firestoreDB = FirebaseFirestore.getInstance();
+    LoginFirebase() {
         auth = FirebaseAuth.getInstance();
     }
 
-    public Task<AuthResult> login(String email, String password){
+    Task<AuthResult> login(String email, String password){
         email = email.trim();
         return auth.signInWithEmailAndPassword(email, password);
     }
 
-    public Boolean isLoggedIn(){
+    Boolean isLoggedIn(){
         return auth.getCurrentUser() != null;
     }
 

@@ -34,10 +34,10 @@ public class Block {
     private int magiskTal;
 
     //Constructor
-    public Block(String forrigeHash, Transaction transaktion, int difficulty) {
+    public Block(String forrigeHash, Transaction transaktion) {
         this.forrigeHash = forrigeHash;
         this.transaktion = transaktion;
-        this.svaerhedsgrad = difficulty;
+        calculateBlockDifficulty(transaktion);
         magiskTal = 0;
         timestamp = new Date().toString();
 
@@ -46,6 +46,17 @@ public class Block {
         blockHash = BlockUtil.udregnHash(forrigeHash + transaktion.toString() + timestamp + magiskTal);
         Log.i(TAG, "Constructor: Block'ens hash er = " + blockHash);
         Log.i(TAG, "Et new Block objekt blev skabt!");
+    }
+
+    private void calculateBlockDifficulty(Transaction transaction){
+        double amount = transaction.getBeloeb();
+        if(amount < 50000){
+            svaerhedsgrad = 3;
+        } else if (amount < 250000){
+            svaerhedsgrad = 4;
+        } else if (amount < 1000000){
+            svaerhedsgrad = 5;
+        } else svaerhedsgrad = 6;
     }
 
 

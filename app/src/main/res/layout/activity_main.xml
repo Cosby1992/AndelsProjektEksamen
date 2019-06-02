@@ -89,12 +89,16 @@
         android:stretchColumns="*">
 
         <TableRow>
-            <Button android:text="Investér"
+            <Button android:id="@+id/btn_invest"
+                android:onClick="investOnClick"
+                android:text="Investér"
                 android:layout_margin="10dp"
                 android:background="@color/colorAccent"
                 android:layout_column="0"/>
 
-            <Button android:text="Lån"
+            <Button android:id="@+id/btn_loan"
+                android:onClick="loanOnClick"
+                android:text="Lån"
                 android:layout_margin="10dp"
                 android:background="@color/colorAccent"
                 android:layout_column="1"/>

@@ -1,8 +1,10 @@
 package dk.cosby.andelsprojekt.view;
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -73,9 +75,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s != null){
-                    viewModel.setCurrentUserEmail(s.toString());
-                } else viewModel.setCurrentUserEmail("");
+                viewModel.setCurrentUserEmail(s != null ? s.toString() : "");
             }
 
             @Override
@@ -93,9 +93,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s != null) {
-                    viewModel.setCurrentUserPassword(s.toString());
-                } else viewModel.setCurrentUserPassword("");
+                viewModel.setCurrentUserPassword(s != null ? s.toString() : "");
             }
 
             @Override
@@ -157,6 +155,7 @@ public class LoginActivity extends AppCompatActivity {
         }
 
     }
+
 
     @Override
     protected void onStart() {
