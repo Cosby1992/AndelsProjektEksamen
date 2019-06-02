@@ -1,7 +1,27 @@
 package dk.cosby.andelsprojekt.view.viewmodel;
 
-public class MainActivityViewModel {
 
+import android.arch.lifecycle.ViewModel;
+
+public class MainActivityViewModel extends ViewModel {
+
+    MainActivityFirebase firebase;
+
+    public MainActivityViewModel() {
+
+        firebase = new MainActivityFirebase();
+
+
+    }
+
+
+    public void makeInvestment(double amount){
+        firebase.makeInvestment(amount);
+    }
+
+    public void makeLoan(double amount){
+        firebase.makeLoan(amount);
+    }
 
 
 

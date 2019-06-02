@@ -10,6 +10,7 @@
     <string name="navn">Navn</string>
     <string name="efternavn">Efternavn</string>
     <string name="gentag_password">Gentag password</string>
+    <string name="frontpage">Forside</string>
 
 
 </resources>

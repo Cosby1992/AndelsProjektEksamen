@@ -9,6 +9,4 @@ public interface EmailAndPasswordVerification {
     boolean isEmailValid(String email);
     boolean isPasswordValid(String password);
 
-
-
 }

@@ -1,16 +1,29 @@
 package dk.cosby.andelsprojekt.view;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.text.InputType;
+import android.view.Menu;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import dk.cosby.andelsprojekt.R;
+import dk.cosby.andelsprojekt.view.viewmodel.MainActivityViewModel;
 
 /**
  * Denne activity er applicationens "forside" eller "startskærm"
@@ -27,6 +40,10 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
     private TextView statusText;
+
+    private Button loan, invest;
+
+    private MainActivityViewModel viewModel;
 
 
     @Override
@@ -57,21 +74,106 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        firebaseAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = firebaseAuth.getCurrentUser();
-
         statusText = findViewById(R.id.tv_status_text);
 
+        viewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
 
-        if(user != null) {
-            statusText.setText(user.getEmail());
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        loan = (Button) findViewById(R.id.btn_loan);
+        invest = (Button) findViewById(R.id.btn_invest);
+
+        if(firebaseAuth.getCurrentUser() != null) {
+            statusText.setText(firebaseAuth.getCurrentUser().getDisplayName());
         } else {
             statusText.setText("No user logged in");
         }
 
-
-
+//        final Observer<Double> balanceDoubleObserver = new Observer<Double>() {
+//            @Override
+//            public void onChanged(@Nullable Double aDouble) {
+//                if (aDouble != null) {
+//                    String showText = aDouble + " AC";
+//                    statusText.setText(showText);
+//                } else statusText.setText("Kunne ikke hente balance informationer.");
+//            }
+//        };
+//
+//        viewModel.observeCurrentAccountBalance(this, balanceDoubleObserver);
 
 
     }
+
+
+    public void investOnClick(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Investér");
+
+// Set up the input
+        final EditText input = new EditText(getBaseContext());
+// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+        input.setInputType(InputType.TYPE_CLASS_NUMBER);
+        input.setHint("Beløb til overførsel");
+        input.setTextColor(Color.BLACK);
+        builder.setView(input);
+
+// Set up the buttons
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if(!input.getText().toString().isEmpty()) {
+                    viewModel.makeInvestment(Double.valueOf(input.getText().toString()));
+                    Toast.makeText(getApplicationContext(), "Overførsel " + input.getText().toString(), Toast.LENGTH_SHORT).show();
+                } else dialog.cancel();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+    }
+
+    public void loanOnClick(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Lån");
+
+// Set up the input
+        final EditText input = new EditText(getBaseContext());
+// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+        input.setInputType(InputType.TYPE_CLASS_NUMBER);
+        input.setTextColor(Color.BLACK);
+        builder.setView(input);
+
+// Set up the buttons
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if(!input.getText().toString().isEmpty()) {
+                    viewModel.makeLoan(Double.valueOf(input.getText().toString()));
+                    Toast.makeText(getApplicationContext(), "Du lånte " + input.getText().toString(), Toast.LENGTH_SHORT).show();
+                } else dialog.cancel();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
 }
+

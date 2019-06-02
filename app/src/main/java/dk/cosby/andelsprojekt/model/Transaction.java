@@ -14,13 +14,11 @@ public class Transaction {
     private static final String TAG = "Transaktion";
 
     private User sender;
-    private User modtager;
     private double beloeb;
 
     //Constructor
-    public Transaction(User sender, User modtager, double beloeb) {
+    public Transaction(User sender, double beloeb) {
         this.sender = sender;
-        this.modtager = modtager;
         this.beloeb = beloeb;
 
         Log.i(TAG, "Et nyt Transaction objekt blev skabt!");
@@ -30,7 +28,6 @@ public class Transaction {
     public String toString() {
         return "Transaction{" +
                 "sender=" + sender +
-                ", modtager=" + modtager +
                 ", beloeb=" + beloeb +
                 '}';
     }
@@ -43,14 +40,6 @@ public class Transaction {
 
     public void setSender(User sender) {
         this.sender = sender;
-    }
-
-    public User getModtager() {
-        return modtager;
-    }
-
-    public void setModtager(User modtager) {
-        this.modtager = modtager;
     }
 
     public double getBeloeb() {
