@@ -10,7 +10,7 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.LoanActivity"></activity>
+
         <activity android:name=".view.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,6 +20,8 @@
         </activity>
         <activity android:name=".view.CreateUserActivity" />
         <activity android:name=".view.MainActivity" />
+        <activity android:name=".view.LoanActivity"/>
+
     </application>
 
 </manifest>
