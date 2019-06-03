@@ -158,12 +158,13 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    // metode der fjerner login knappen og viser en progressBar
     private void showProgressBar(){
         loginProgress.setVisibility(View.VISIBLE);
         login.setVisibility(View.GONE);
         sendToCreateUser.setVisibility(View.GONE);
     }
-
+    // metode der viser login knappen og fjerner en progressBar
     private void showLoginButton(){
         loginProgress.setVisibility(View.GONE);
         login.setVisibility(View.VISIBLE);
