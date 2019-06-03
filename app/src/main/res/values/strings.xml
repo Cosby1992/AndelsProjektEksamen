@@ -11,6 +11,8 @@
     <string name="lastname">Efternavn</string>
     <string name="gentag_password">Gentag password</string>
     <string name="frontpage">Forside</string>
+    <string name="hint_loan_amount">Indtast lånebeløb</string>
+    <string name="btn_loan">Lån</string>
 
 
 </resources>
