@@ -65,13 +65,15 @@ public class CreateUserViewModel extends ViewModel implements Pusher {
                         allGoodArray[0] = task.isSuccessful();
                         AuthResult result = task.getResult();
                         currentUserId.setValue(result.getUser().getUid());
-
+                        user.setUser_id(currentUserId.getValue());
                         pushBoolArrayToAddicts(allGoodArray);
                     }
                 });
     }
 
     public void saveUserInFirestore(){
+
+        user.setUser_id(currentUserId.getValue());
 
         database.saveUserInFirestore(user, currentUserId.getValue())
                 .addOnCompleteListener(new OnCompleteListener<Void>() {

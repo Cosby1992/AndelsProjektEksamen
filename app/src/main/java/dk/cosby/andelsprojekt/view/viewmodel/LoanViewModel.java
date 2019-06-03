@@ -57,8 +57,6 @@ public class LoanViewModel extends ViewModel {
                 DocumentSnapshot snapshot = task.getResult();
                 if (snapshot.exists()){
                     user = snapshot.toObject(User.class);
-
-                    user.setUser_id(snapshot.getId());
                 }
             }
         });
