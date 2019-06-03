@@ -8,14 +8,18 @@ package dk.cosby.andelsprojekt.model.observermodel;
  */
 public interface Addict {
 
-    default void onStringDopeRecieved(String pusherName, String dope){
+
+    default void shoot(){
+
+    }
+
+    default void onStringDopeRecieved(String dope){
 
     }
 
     default void onBoolArrayDopeRecieved(boolean[] dope){
 
     }
-
-
+    
 
 }
