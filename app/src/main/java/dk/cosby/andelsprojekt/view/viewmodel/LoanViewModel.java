@@ -29,6 +29,7 @@ public class LoanViewModel extends ViewModel {
         userDataObtained.setValue(false);
         transaktionStatus.setValue(false);
         fondWithdrawStatus.setValue(false);
+        transaction = new Transaction(user, 0);
 
         firebase.getUserData().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -41,13 +42,14 @@ public class LoanViewModel extends ViewModel {
         });
 
         currentAmount.setValue(0.0);
-        transaction = new Transaction(user, 0.0);
+
 
     }
 
     public void makeTransaktion(){
         if(!user.getUser_id().isEmpty()){
             transaction.setAmount(currentAmount.getValue());
+            transaction.setUser(user);
 
             firebase.saveTransaktion(transaction).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                 @Override
@@ -65,7 +67,7 @@ public class LoanViewModel extends ViewModel {
 
     public void makePsuedoFondTransaction(){
 
-        firebase.withdrawFromFond(currentAmount.getValue()).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        firebase.withdrawFromFond(Double.valueOf(currentAmount.getValue())).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.isSuccessful()){
@@ -84,7 +86,6 @@ public class LoanViewModel extends ViewModel {
     public void setCurrentAmount(double amount) {
         transaction.setAmount(amount);
         currentAmount.setValue(transaction.getAmount());
-        //currentAmount.notify();
     }
 
     public MutableLiveData<Boolean> getUserDataObtained() {
