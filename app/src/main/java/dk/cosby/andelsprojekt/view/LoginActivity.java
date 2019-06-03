@@ -63,7 +63,11 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                viewModel.setCurrentUserEmail(s != null ? s.toString() : "");
+                if (s != null) {
+                    viewModel.setCurrentUserEmail(s.toString());
+                } else {
+                    viewModel.setCurrentUserEmail("");
+                }
             }
 
             @Override
@@ -154,12 +158,13 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    // metode der fjerner login knappen og viser en progressBar
     private void showProgressBar(){
         loginProgress.setVisibility(View.VISIBLE);
         login.setVisibility(View.GONE);
         sendToCreateUser.setVisibility(View.GONE);
     }
-
+    // metode der viser login knappen og fjerner en progressBar
     private void showLoginButton(){
         loginProgress.setVisibility(View.GONE);
         login.setVisibility(View.VISIBLE);

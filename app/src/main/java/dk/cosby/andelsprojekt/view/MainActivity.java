@@ -140,34 +140,40 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void loanOnClick(View view) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Lån");
 
-// Set up the input
-        final EditText input = new EditText(getBaseContext());
-// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-        input.setInputType(InputType.TYPE_CLASS_NUMBER);
-        input.setTextColor(Color.BLACK);
-        builder.setView(input);
+        Intent loanActivity = new Intent(getApplicationContext(),LoanActivity.class);
+        startActivity(loanActivity);
 
-// Set up the buttons
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if(!input.getText().toString().isEmpty()) {
-                    viewModel.makeLoan(Double.valueOf(input.getText().toString()));
-                    Toast.makeText(getApplicationContext(), "Du lånte " + input.getText().toString(), Toast.LENGTH_SHORT).show();
-                } else dialog.cancel();
-            }
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
 
-        builder.show();
+
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.setTitle("Lån");
+//
+//// Set up the input
+//        final EditText input = new EditText(getBaseContext());
+//// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+//        input.setInputType(InputType.TYPE_CLASS_NUMBER);
+//        input.setTextColor(Color.BLACK);
+//        builder.setView(input);
+//
+//// Set up the buttons
+//        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                if(!input.getText().toString().isEmpty()) {
+//                    viewModel.makeLoan(Double.valueOf(input.getText().toString()));
+//                    Toast.makeText(getApplicationContext(), "Du lånte " + input.getText().toString(), Toast.LENGTH_SHORT).show();
+//                } else dialog.cancel();
+//            }
+//        });
+//        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                dialog.cancel();
+//            }
+//        });
+//
+//        builder.show();
     }
 
     @Override

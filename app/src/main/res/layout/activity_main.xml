@@ -98,7 +98,7 @@
 
             <Button android:id="@+id/btn_loan_main"
                 android:onClick="loanOnClick"
-                android:text="Lån"
+                android:text="@string/btn_loan"
                 android:layout_margin="10dp"
                 android:background="@color/colorAccent"
                 android:layout_column="1"/>

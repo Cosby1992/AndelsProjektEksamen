@@ -15,4 +15,13 @@
     <string name="invester">Investér</string>
 
 
+
+
+
+
+
+    <string name="hint_loan_amount">Indtast lånebeløb</string>
+    <string name="btn_loan">Lån</string>
+
+
 </resources>
