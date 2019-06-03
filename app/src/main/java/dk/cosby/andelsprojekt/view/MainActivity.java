@@ -76,8 +76,8 @@ public class MainActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-        loan = (Button) findViewById(R.id.btn_loan);
-        invest = (Button) findViewById(R.id.btn_invest);
+        loan = (Button) findViewById(R.id.btn_loan_main);
+        invest = (Button) findViewById(R.id.btn_invest_main);
 
         if(firebaseAuth.getCurrentUser() != null) {
             statusText.setText(firebaseAuth.getCurrentUser().getDisplayName());
@@ -102,7 +102,12 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void investOnClick(View view) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        Intent investActicity = new Intent(getApplicationContext(), InvestActivity.class);
+        startActivity(investActicity);
+
+
+    /*    AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Investér");
 
 // Set up the input
@@ -131,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         builder.show();
+        */
     }
 
     public void loanOnClick(View view) {
