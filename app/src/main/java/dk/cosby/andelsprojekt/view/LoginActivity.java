@@ -63,7 +63,11 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                viewModel.setCurrentUserEmail(s != null ? s.toString() : "");
+                if (s != null) {
+                    viewModel.setCurrentUserEmail(s.toString());
+                } else {
+                    viewModel.setCurrentUserEmail("");
+                }
             }
 
             @Override
