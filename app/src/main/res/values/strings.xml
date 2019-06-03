@@ -11,6 +11,8 @@
     <string name="lastname">Efternavn</string>
     <string name="gentag_password">Gentag password</string>
     <string name="frontpage">Forside</string>
+    <string name="beloeb">Indtast beløb</string>
+    <string name="invester">Investér</string>
 
 
 </resources>

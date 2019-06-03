@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.InvestActivity"
+    android:background="@color/colorBackground">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="35dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/invester"
+            android:gravity="center"
+            android:textSize="30sp"
+            android:textAllCaps="true"
+            android:textColor="@color/colorPrimaryWhite"/>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/colorPrimaryLight"
+            android:layout_marginTop="20dp">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/tiet_beloeb"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType=""
+                android:textColor="@color/colorPrimaryWhite"
+                android:hint="@string/beloeb"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+
+    <Button
+        android:id="@+id/btn_invester"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:background="@color/colorAccent"
+        android:text="@string/invester"
+        android:layout_gravity="center"
+        android:layout_marginTop="35dp"
+        />
+
+    </LinearLayout>
+</ScrollView>
