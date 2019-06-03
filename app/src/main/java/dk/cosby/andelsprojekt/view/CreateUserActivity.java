@@ -12,8 +12,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-import java.util.regex.Pattern;
 
+import java.util.EmptyStackException;
+import java.util.regex.Pattern;
 import dk.cosby.andelsprojekt.R;
 import dk.cosby.andelsprojekt.model.observermodel.Addict;
 import dk.cosby.andelsprojekt.view.viewmodel.CreateUserViewModel;
@@ -171,7 +172,9 @@ public class CreateUserActivity extends AppCompatActivity implements Addict {
         // repeat password er ens
         if(viewModel.isEmailValid().getValue()
                 && viewModel.isPasswordValid().getValue()
-                && viewModel.getCurrentUserPassword().getValue().equals(reapeatPassword.getText().toString())) {
+                && viewModel.getCurrentUserPassword().getValue().equals(reapeatPassword.getText().toString())
+                && !name.getText().toString().isEmpty()
+                && !lastname.getText().toString().isEmpty()) {
 
             viewModel.createUserAuth();
 
@@ -209,16 +212,16 @@ public class CreateUserActivity extends AppCompatActivity implements Addict {
     }
 
     @Override
-    public void onBoolArrayDopeRecieved(boolean[] dope) {
-        if(dope[0] && !dope[1] && !dope[2]){
-            viewModel.saveUserInFirestore();
-        } else if (dope[0] && dope[1] && !dope[2]) {
-            viewModel.updateUserAuth();
-        } else if (dope[0] && dope[1] && dope[2]) {
-            Intent mainActivity = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(mainActivity);
-        } else {
-            showButtonHideProgress();
+            public void onBoolArrayDopeRecieved(boolean[] dope) {
+                if(dope[0] && !dope[1] && !dope[2]){
+                    viewModel.saveUserInFirestore();
+                } else if (dope[0] && dope[1] && !dope[2]) {
+                    viewModel.updateUserAuth();
+                } else if (dope[0] && dope[1] && dope[2]) {
+                    Intent mainActivity = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(mainActivity);
+                } else {
+                    showButtonHideProgress();
         }
     }
 
