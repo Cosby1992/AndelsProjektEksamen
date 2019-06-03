@@ -1,9 +1,7 @@
 package dk.cosby.andelsprojekt.model;
 
 /**
- * Denne klasse indeholder en blockchain og dens sværhedsgrad.
- * Sværhedsgraden bygges på hvor mange calculationer det kræver at opnå et hash
- * der begynder med sværhedsgradens antal nuller.
+ * Denne klasse indeholder en blockchain (en liste af blocks)
  *
  * @version 1.0
  * @author Cosby
@@ -12,14 +10,17 @@ package dk.cosby.andelsprojekt.model;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class Blockchain {
 
     private List<Block> blockChain;
-    private int svaerhedsgrad = 5;
 
     //Constructor
     public Blockchain() {
         blockChain = new ArrayList<Block>();
+
+        //Skaber genesis block ved skabelsen af en blockchain
+        blockChain.add(new Block("0000", new Transaction(new User(), 0)));
     }
 
 
@@ -33,11 +34,4 @@ public class Blockchain {
         this.blockChain = blockChain;
     }
 
-    public int getSvaerhedsgrad() {
-        return svaerhedsgrad;
-    }
-
-    public void setSvaerhedsgrad(int svaerhedsgrad) {
-        this.svaerhedsgrad = svaerhedsgrad;
-    }
 }

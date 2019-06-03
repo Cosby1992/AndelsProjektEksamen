@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
  * @author Cosby
  */
 
-public class User implements EmailAndPasswordVerification {
+public class User implements EmailAndPasswordVerification  {
 
 
     private static final String TAG = "User";

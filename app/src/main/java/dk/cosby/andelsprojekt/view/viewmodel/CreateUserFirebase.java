@@ -1,6 +1,6 @@
 package dk.cosby.andelsprojekt.view.viewmodel;
 
-import android.arch.lifecycle.MutableLiveData;
+
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -8,14 +8,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.SetOptions;
-
-import java.util.Objects;
-
-import dk.cosby.andelsprojekt.model.User;
 
 /**
  * Denne klasse håndtere databaseoperationer der vedrører oprettelse af en bruger

@@ -13,40 +13,38 @@ public class Transaction {
 
     private static final String TAG = "Transaktion";
 
-    private User sender;
-    private double beloeb;
+    private User user;
+    private double amount;
 
     //Constructor
-    public Transaction(User sender, double beloeb) {
-        this.sender = sender;
-        this.beloeb = beloeb;
-
-        Log.i(TAG, "Et nyt Transaction objekt blev skabt!");
+    public Transaction(User user, double amount) {
+        this.user = user;
+        this.amount = amount;
     }
 
     @Override
     public String toString() {
         return "Transaction{" +
-                "sender=" + sender +
-                ", beloeb=" + beloeb +
+                "user=" + user +
+                ", amount=" + amount +
                 '}';
     }
 
     ////////////////////////// getters and setters ///////////////////////////////
 
-    public User getSender() {
-        return sender;
+    public User getUser() {
+        return user;
     }
 
-    public void setSender(User sender) {
-        this.sender = sender;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public double getBeloeb() {
-        return beloeb;
+    public double getAmount() {
+        return amount;
     }
 
-    public void setBeloeb(double beloeb) {
-        this.beloeb = beloeb;
+    public void setAmount(double amount) {
+        this.amount = amount;
     }
 }

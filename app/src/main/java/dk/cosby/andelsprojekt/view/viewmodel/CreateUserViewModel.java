@@ -35,7 +35,6 @@ public class CreateUserViewModel extends ViewModel implements Pusher {
     private MutableLiveData<Boolean> currentIsEmailValid = new MutableLiveData<>();
     private MutableLiveData<Boolean> currentIsPasswordValid = new MutableLiveData<>();
 
-    private MutableLiveData<Boolean> everythingOk = new MutableLiveData<>();
     private boolean[] allGoodArray = new boolean[3];
 
     private User user = new User();
@@ -50,8 +49,6 @@ public class CreateUserViewModel extends ViewModel implements Pusher {
 
         currentIsEmailValid.setValue(false);
         currentIsPasswordValid.setValue(false);
-
-        everythingOk.setValue(false);
 
         setCurrentUserId("midlertidigt id");
 
@@ -96,19 +93,6 @@ public class CreateUserViewModel extends ViewModel implements Pusher {
                 });
     }
 
-    private boolean isAllGood(){
-        boolean result = true;
-        for(Boolean bool : allGoodArray){
-            if(!bool){
-                result = false;
-            }
-        }
-        return result;
-    }
-
-    public MutableLiveData<Boolean> getEverythingOk() {
-        return everythingOk;
-    }
 
     public MutableLiveData<String> getCurrentUserId() {
         currentUserId.setValue(user.getUser_id());
@@ -177,6 +161,8 @@ public class CreateUserViewModel extends ViewModel implements Pusher {
     public MutableLiveData<Boolean> isPasswordValid() {
         return currentIsPasswordValid;
     }
+
+
 
     private ArrayList<Addict> addicts = new ArrayList<>();
 

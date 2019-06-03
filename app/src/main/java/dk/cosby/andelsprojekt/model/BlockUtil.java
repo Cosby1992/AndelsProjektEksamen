@@ -51,7 +51,6 @@ public class BlockUtil {
 //            e.printStackTrace();
 //            return "0";
 
-            Log.e(TAG, "udregnHash(String): fejlede.");
             e.printStackTrace();
             throw new RuntimeException(e);
         }
@@ -67,20 +66,20 @@ public class BlockUtil {
      * @param block den block der skal mines.
      */
     public static void mineBlock(Block block) {
-        int magiskTal = block.getMagiskTal();
+        int magiskTal = block.getMagicNumber();
         String blockHash = block.getBlockHash();
-        while(!validerHashMedSværhedsgrad(blockHash, block.getSvaerhedsgrad())) {
+        while(!validerHashMedSværhedsgrad(blockHash, block.getDifficulty())) {
 
             magiskTal++;
             blockHash= udregnHash(block.getInformationTilHash());
-            block.setMagiskTal(magiskTal);
+            block.setMagicNumber(magiskTal);
             block.setBlockHash(blockHash);
 
         }
 
         Log.i(TAG, "mineBlock(Block): success \n" +
                 "Udregnet hash = " + block.getBlockHash() + "\n" +
-                "Magisk Tal = " + block.getMagiskTal() + "\n" +
+                "Magisk Tal = " + block.getMagicNumber() + "\n" +
                 "Block Skabt = " + block.getTimestamp() + "\n" +
                 "Mining sluttet = " + new Date().toString());
 

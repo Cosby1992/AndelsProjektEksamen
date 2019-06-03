@@ -21,10 +21,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 
+import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 import dk.cosby.andelsprojekt.R;
 import dk.cosby.andelsprojekt.model.observermodel.Addict;
+import dk.cosby.andelsprojekt.model.observermodel.Pusher;
 import dk.cosby.andelsprojekt.view.viewmodel.CreateUserViewModel;
 
 /**
@@ -185,7 +187,6 @@ public class CreateUserActivity extends AppCompatActivity implements Addict {
             viewModel.createUserAuth();
 
 
-
         } else if (!viewModel.getCurrentUserPassword().getValue().equals(reapeatPassword.getText().toString())){
             showButtonHideProgress();
             Toast.makeText(CreateUserActivity.this, "Passwords er ikke ens!", Toast.LENGTH_SHORT).show();
@@ -229,6 +230,12 @@ public class CreateUserActivity extends AppCompatActivity implements Addict {
         } else {
             showButtonHideProgress();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        viewModel.goToRehab(this);
     }
 
     private void showButtonHideProgress(){

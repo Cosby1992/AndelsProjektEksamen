@@ -8,6 +8,7 @@ package dk.cosby.andelsprojekt.model.observermodel;
  *
  */
 public interface Pusher {
+
     void becomeAddict(Addict addict);
     void goToRehab(Addict addict);
 
