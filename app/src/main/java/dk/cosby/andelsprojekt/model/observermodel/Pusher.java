@@ -11,6 +11,10 @@ public interface Pusher {
     void becomeAddict(Addict addict);
     void goToRehab(Addict addict);
 
+    default void push(){
+
+    }
+
     default void pushToAddicts(String dope){
 
     }

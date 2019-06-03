@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorPrimaryWhite"
                 android:inputType="textPersonName"
-                android:hint="@string/navn"/>
+                android:hint="@string/name"/>
 
         </android.support.design.widget.TextInputLayout>
 
@@ -57,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
                 android:textColor="@color/colorPrimaryWhite"
-                android:hint="@string/efternavn"/>
+                android:hint="@string/lastname"/>
 
         </android.support.design.widget.TextInputLayout>
 

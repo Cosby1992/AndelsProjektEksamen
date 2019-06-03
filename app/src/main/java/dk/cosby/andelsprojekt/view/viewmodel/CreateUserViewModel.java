@@ -43,10 +43,10 @@ public class CreateUserViewModel extends ViewModel implements Pusher {
 
     public CreateUserViewModel() {
 
-        currentUserEmail.setValue(user.getEmailAdresse());
+        currentUserEmail.setValue(user.getEmailAddress());
         currentUserPassword.setValue("");
-        currentUserName.setValue(user.getNavn());
-        currentUserLastname.setValue(user.getEfternavn());
+        currentUserName.setValue(user.getName());
+        currentUserLastname.setValue(user.getLastname());
 
         currentIsEmailValid.setValue(false);
         currentIsPasswordValid.setValue(false);
@@ -123,15 +123,15 @@ public class CreateUserViewModel extends ViewModel implements Pusher {
     }
 
     public MutableLiveData<String> getCurrentUserEmail() {
-        currentUserEmail.setValue(user.getEmailAdresse());
+        currentUserEmail.setValue(user.getEmailAddress());
         return currentUserEmail;
     }
 
     //Foretag ændring i modellen
     public void setCurrentUserEmail(String userEmail){
-        user.setEmailAdresse(userEmail);
+        user.setEmailAddress(userEmail);
         currentIsEmailValid.setValue(user.isEmailValid(userEmail));
-        currentUserEmail.setValue(user.getEmailAdresse());
+        currentUserEmail.setValue(user.getEmailAddress());
     }
 
     public MutableLiveData<String> getCurrentUserPassword() {
@@ -145,27 +145,27 @@ public class CreateUserViewModel extends ViewModel implements Pusher {
     }
 
     public MutableLiveData<String> getCurrentUserLastname() {
-        currentUserLastname.setValue(user.getEfternavn());
+        currentUserLastname.setValue(user.getLastname());
         return currentUserLastname;
     }
 
     //Foretag ændring i modellen
     public void setCurrentUserLastname(String userLastname){
-        user.setEfternavn(userLastname);
-        currentUserPassword.setValue(user.getEfternavn());
+        user.setLastname(userLastname);
+        currentUserPassword.setValue(user.getLastname());
     }
 
 
 
     public MutableLiveData<String> getCurrentUserName() {
-        currentUserName.setValue(user.getNavn());
+        currentUserName.setValue(user.getName());
         return currentUserName;
     }
 
     //Foretag ændring i modellen
     public void setCurrentUserName(String userName){
-        user.setNavn(userName);
-        currentUserName.setValue(user.getNavn());
+        user.setName(userName);
+        currentUserName.setValue(user.getName());
     }
 
 
