@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="dk.cosby.andelsprojekt">
 
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -11,18 +10,16 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-
-
+        <activity android:name=".view.LoanActivity"></activity>
         <activity android:name=".view.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".view.CreateUserActivity"></activity>
-        <activity android:name=".view.MainActivity"></activity>
+        <activity android:name=".view.CreateUserActivity" />
+        <activity android:name=".view.MainActivity" />
     </application>
 
 </manifest>
