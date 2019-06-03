@@ -3,14 +3,20 @@ package dk.cosby.andelsprojekt.view.viewmodel;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.SetOptions;
 
+import dk.cosby.andelsprojekt.model.Fond;
 import dk.cosby.andelsprojekt.model.Transaction;
 import dk.cosby.andelsprojekt.model.User;
+
+import static android.support.constraint.Constraints.TAG;
 
 public class LoanViewModel extends ViewModel {
 
@@ -20,6 +26,7 @@ public class LoanViewModel extends ViewModel {
     private MutableLiveData<Double> currentAmount = new MutableLiveData<>();
 
     private User user = new User();
+    private Fond fond;
     private LoanFirebase firebase;
     private Transaction transaction;
 
@@ -48,7 +55,7 @@ public class LoanViewModel extends ViewModel {
 
     public void makeTransaktion(){
         if(!user.getUser_id().isEmpty()){
-            transaction.setAmount(currentAmount.getValue());
+            transaction.setAmount(Double.valueOf(currentAmount.getValue().toString()));
             transaction.setUser(user);
 
             firebase.saveTransaktion(transaction).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
@@ -67,13 +74,21 @@ public class LoanViewModel extends ViewModel {
 
     public void makePsuedoFondTransaction(){
 
-        firebase.withdrawFromFond(Double.valueOf(currentAmount.getValue())).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        firebase.getFondRef().get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()){
-                    fondWithdrawStatus.setValue(true);
+                DocumentSnapshot document = task.getResult();
+                if (document.exists() && currentAmount.getValue() != null){
+                    fond = document.toObject(Fond.class);
+                    fond.subtract(currentAmount.getValue());
+                    firebase.getFondRef().set(fond, SetOptions.merge()).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.d(TAG, "makeLoan: 'failure' loan failed");
+                        }
+                    });
                 } else {
-                    fondWithdrawStatus.setValue(false);
+                    Log.d(TAG, "makeLoan: 'failed' dokumentet existerede ikke i firebase");
                 }
             }
         });
