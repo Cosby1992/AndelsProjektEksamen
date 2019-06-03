@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -34,8 +35,6 @@ public class LoanViewModel extends ViewModel {
     public LoanViewModel(){
         firebase = new LoanFirebase();
         userDataObtained.setValue(false);
-        transaktionStatus.setValue(false);
-        fondWithdrawStatus.setValue(false);
         transaction = new Transaction(user, 0);
 
         firebase.getUserData().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -84,7 +83,13 @@ public class LoanViewModel extends ViewModel {
                     firebase.getFondRef().set(fond, SetOptions.merge()).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
+                            fondWithdrawStatus.setValue(false);
                             Log.d(TAG, "makeLoan: 'failure' loan failed");
+                        }
+                    }).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            fondWithdrawStatus.setValue(true);
                         }
                     });
                 } else {

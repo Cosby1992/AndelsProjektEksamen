@@ -59,7 +59,7 @@ public class LoanActivity extends AppCompatActivity {
                 if(aBoolean){
                     viewModel.makePsuedoFondTransaction();
                 } else {
-                    Toast.makeText(LoanActivity.this, "Transaktionen med pseudofonden fejlede.", Toast.LENGTH_SHORT);
+                    Toast.makeText(LoanActivity.this, "Transaktionen med pseudofonden fejlede.", Toast.LENGTH_SHORT).show();
                 }
             }
         };
@@ -70,7 +70,7 @@ public class LoanActivity extends AppCompatActivity {
             @Override
             public void onChanged(@Nullable Boolean aBoolean) {
                 if(aBoolean){
-                    Toast.makeText(LoanActivity.this, "Transaktionen var successfuld.", Toast.LENGTH_SHORT);
+                    Toast.makeText(LoanActivity.this, "Transaktionen var successfuld.", Toast.LENGTH_SHORT).show();
                 }
             }
         };
