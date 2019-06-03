@@ -30,13 +30,13 @@ public class LoginViewModel extends ViewModel {
     }
 
     public MutableLiveData<String> getCurrentUserEmail() {
-        currentUserEmail.setValue(user.getEmailAdresse());
+        currentUserEmail.setValue(user.getEmailAddress());
         return currentUserEmail;
     }
 
     public void setCurrentUserEmail(String email) {
-        user.setEmailAdresse(email);
-        currentUserPassword.setValue(user.getEmailAdresse());
+        user.setEmailAddress(email);
+        currentUserPassword.setValue(user.getEmailAddress());
     }
 
 

@@ -67,20 +67,20 @@ public class BlockUtil {
      * @param block den block der skal mines.
      */
     public static void mineBlock(Block block) {
-        int magiskTal = block.getMagiskTal();
+        int magicNumber = block.getMagicNumber();
         String blockHash = block.getBlockHash();
-        while(!validerHashMedSværhedsgrad(blockHash, block.getSvaerhedsgrad())) {
+        while(!validerHashMedSværhedsgrad(blockHash, block.getDifficulty())) {
 
-            magiskTal++;
+            magicNumber++;
             blockHash= udregnHash(block.getInformationTilHash());
-            block.setMagiskTal(magiskTal);
+            block.setMagicNumber(magicNumber);
             block.setBlockHash(blockHash);
 
         }
 
         Log.i(TAG, "mineBlock(Block): success \n" +
                 "Udregnet hash = " + block.getBlockHash() + "\n" +
-                "Magisk Tal = " + block.getMagiskTal() + "\n" +
+                "Magisk Tal = " + block.getMagicNumber() + "\n" +
                 "Block Skabt = " + block.getTimestamp() + "\n" +
                 "Mining sluttet = " + new Date().toString());
 
@@ -92,14 +92,14 @@ public class BlockUtil {
      * Denne metode bruges til at checke om et hash overholder en given sværhedsgrad.
      * Sværhedsgraden fortæller hvor mange nuller der skal være i starten af et hash.
      * @param hash hash der skal checkes.
-     * @param svaerhedgrad sværhedgrad der skal overholdes.
+     * @param difficulty sværhedgrad der skal overholdes.
      * @return true hvis hash'et overholder sværhedsgraden, ellers false.
      */
-    public static boolean validerHashMedSværhedsgrad(String hash, int svaerhedgrad){
+    public static boolean validerHashMedSværhedsgrad(String hash, int difficulty){
 
         StringBuilder startString = new StringBuilder();
 
-        for (int i = 0; i < svaerhedgrad; i++) {
+        for (int i = 0; i < difficulty; i++) {
             startString.append("0");
         }
 

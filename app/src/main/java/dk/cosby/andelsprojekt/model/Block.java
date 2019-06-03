@@ -17,7 +17,7 @@ public class Block {
     private static final String TAG = "Block";
 
     private String blockHash;
-    private String forrigeHash;
+    private String priviousHash;
     private Transaction transaktion;
     private String timestamp;
 
@@ -25,38 +25,38 @@ public class Block {
      * Sværhedsgraden bygges på hvor mange calculationer det kræver at opnå et hash
      * der begynder med sværhedsgradens antal nuller.
      */
-    private int svaerhedsgrad;
+    private int difficulty;
 
     /**
      * Det magiske tal repræsenterer det tal der skal ligges til det andet blockinformation
      * for at skabe et hash der starter med sværhedsgradens antal nuller.
      */
-    private int magiskTal;
+    private int magicNumber;
 
     //Constructor
-    public Block(String forrigeHash, Transaction transaktion) {
-        this.forrigeHash = forrigeHash;
+    public Block(String priviousHash, Transaction transaktion) {
+        this.priviousHash = priviousHash;
         this.transaktion = transaktion;
         calculateBlockDifficulty(transaktion);
-        magiskTal = 0;
+        magicNumber = 0;
         timestamp = new Date().toString();
 
         //Giver blocken et midlertidigt hash mens den mines.
         //Bliver nok fjernet senere.
-        blockHash = BlockUtil.udregnHash(forrigeHash + transaktion.toString() + timestamp + magiskTal);
+        blockHash = BlockUtil.udregnHash(priviousHash + transaktion.toString() + timestamp + magicNumber);
         Log.i(TAG, "Constructor: Block'ens hash er = " + blockHash);
         Log.i(TAG, "Et new Block objekt blev skabt!");
     }
 
     private void calculateBlockDifficulty(Transaction transaction){
-        double amount = transaction.getBeloeb();
+        double amount = transaction.getAmount();
         if(amount < 50000){
-            svaerhedsgrad = 3;
+            difficulty = 3;
         } else if (amount < 250000){
-            svaerhedsgrad = 4;
+            difficulty = 4;
         } else if (amount < 1000000){
-            svaerhedsgrad = 5;
-        } else svaerhedsgrad = 6;
+            difficulty = 5;
+        } else difficulty = 6;
     }
 
 
@@ -65,18 +65,18 @@ public class Block {
      * @return
      */
     public String getInformationTilHash(){
-        return forrigeHash + transaktion.toString() + timestamp + magiskTal;
+        return priviousHash + transaktion.toString() + timestamp + magicNumber;
     }
 
     @Override
     public String toString() {
         return "Block{" +
                 "blockHash='" + blockHash + '\'' +
-                ", forrigeHash='" + forrigeHash + '\'' +
+                ", priviousHash='" + priviousHash + '\'' +
                 ", transaktion=" + transaktion +
                 ", timestamp='" + timestamp + '\'' +
-                ", svaerhedsgrad=" + svaerhedsgrad +
-                ", magiskTal=" + magiskTal +
+                ", difficulty=" + difficulty +
+                ", magicNumber=" + magicNumber +
                 '}';
     }
 
@@ -91,12 +91,12 @@ public class Block {
         this.blockHash = blockHash;
     }
 
-    public String getForrigeHash() {
-        return forrigeHash;
+    public String getPriviousHash() {
+        return priviousHash;
     }
 
-    public void setForrigeHash(String forrigeHash) {
-        this.forrigeHash = forrigeHash;
+    public void setPriviousHash(String priviousHash) {
+        this.priviousHash = priviousHash;
     }
 
     public Transaction getTransaktion() {
@@ -115,19 +115,19 @@ public class Block {
         this.timestamp = timestamp;
     }
 
-    public int getSvaerhedsgrad() {
-        return svaerhedsgrad;
+    public int getDifficulty() {
+        return difficulty;
     }
 
-    public void setSvaerhedsgrad(int svaerhedsgrad) {
-        this.svaerhedsgrad = svaerhedsgrad;
+    public void setDifficulty(int difficulty) {
+        this.difficulty = difficulty;
     }
 
-    public int getMagiskTal() {
-        return magiskTal;
+    public int getMagicNumber() {
+        return magicNumber;
     }
 
-    public void setMagiskTal(int magiskTal) {
-        this.magiskTal = magiskTal;
+    public void setMagicNumber(int magicNumber) {
+        this.magicNumber = magicNumber;
     }
 }

@@ -15,22 +15,22 @@ public class User implements EmailAndPasswordVerification {
     private static final String TAG = "User";
 
     private String user_id;
-    private String navn;
-    private String efternavn;
-    private String emailAdresse;
+    private String name;
+    private String lastname;
+    private String emailAddress;
 
 
     //no-arg constructor
     public User() {
-        navn = "";
-        efternavn = "";
-        emailAdresse = "";
+        name = "";
+        lastname = "";
+        emailAddress = "";
 
     }
 
     //Constructor (brugt under udvikling)
-    public User(String emailAdresse) {
-        this.emailAdresse = emailAdresse;
+    public User(String emailAddress) {
+        this.emailAddress = emailAddress;
     }
 
     /**
@@ -72,27 +72,27 @@ public class User implements EmailAndPasswordVerification {
         this.user_id = user_id;
     }
 
-    public String getNavn() {
-        return navn;
+    public String getName() {
+        return name;
     }
 
-    public void setNavn(String navn) {
-        this.navn = navn;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getEfternavn() {
-        return efternavn;
+    public String getLastname() {
+        return lastname;
     }
 
-    public void setEfternavn(String efternavn) {
-        this.efternavn = efternavn;
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
-    public String getEmailAdresse() {
-        return emailAdresse;
+    public String getEmailAddress() {
+        return emailAddress;
     }
 
-    public void setEmailAdresse(String emailAdresse) {
-        this.emailAdresse = emailAdresse;
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
     }
 }

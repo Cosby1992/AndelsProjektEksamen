@@ -15,7 +15,6 @@ import java.util.List;
 public class Blockchain {
 
     private List<Block> blockChain;
-    private int svaerhedsgrad = 5;
 
     //Constructor
     public Blockchain() {
@@ -33,11 +32,4 @@ public class Blockchain {
         this.blockChain = blockChain;
     }
 
-    public int getSvaerhedsgrad() {
-        return svaerhedsgrad;
-    }
-
-    public void setSvaerhedsgrad(int svaerhedsgrad) {
-        this.svaerhedsgrad = svaerhedsgrad;
-    }
 }
