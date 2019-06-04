@@ -84,12 +84,11 @@ public class LoanViewModel extends ViewModel {
                 @Override
                 public void onComplete(@NonNull Task<DocumentReference> task) {
                     if(task.isSuccessful()){
-                        // opdatere boolean til true hvis transaktionen succesfuldt bliver
+                        // opdaterer boolean til true hvis transaktionen succesfuldt bliver
                         // gemt i firestore
                         transaktionStatus.setValue(true);
                     } else {
-                        // opdatere boolean til false hvis transaktionen succesfuldt bliver
-                        // gemt i firestore
+                        // opdatere boolean til false hvis transaktionen fejler
                         transaktionStatus.setValue(false);
                     }
                 }
