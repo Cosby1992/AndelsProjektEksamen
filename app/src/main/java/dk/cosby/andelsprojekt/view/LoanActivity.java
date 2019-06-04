@@ -72,7 +72,7 @@ public class LoanActivity extends AppCompatActivity {
         // de benyttes for at der ikke bliver foretaget flere kald til databasen samtidig.
         // samt dele processerne op således at der kan reageres på forskellige metoders succes eller
         // fejl.
-        Observer<Boolean> transactionStatus = new Observer<Boolean>() {
+        Observer<Boolean> transactionStatus = new Observer<Boolean>(){
             @Override
             public void onChanged(@Nullable Boolean aBoolean) {
                 // hvis transaktionen existerer og brugerens informationer succesfuldt er
@@ -100,7 +100,6 @@ public class LoanActivity extends AppCompatActivity {
             }
         };
 
-        // gør observeren observer af MutableLiveData<Boolean> fonWithdrawStatusStatus fra viewmodellen
         viewModel.getFondWithdrawStatus().observe(this, pseudoFondStatus);
 
 
@@ -112,11 +111,6 @@ public class LoanActivity extends AppCompatActivity {
             }
         });
 
-
-
     }
-
-
-
 
 }

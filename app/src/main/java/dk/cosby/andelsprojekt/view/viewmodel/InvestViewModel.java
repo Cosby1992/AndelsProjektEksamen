@@ -148,11 +148,11 @@ public class InvestViewModel extends ViewModel {
         return userDataObtained;
     }
 
-    public MutableLiveData<Boolean> getTransaktionStatus() {
+    public MutableLiveData<Boolean> getTransactionStatus() {
         return transactionsStatus;
     }
 
-    public MutableLiveData<Boolean> getFondWithdrawStatus() {
+    public MutableLiveData<Boolean> getFondDepositStatus() {
         return fondDepositStatus;
     }
 }
