@@ -160,6 +160,7 @@ public class CreateUserActivity extends AppCompatActivity implements Addict {
 //        viewModel.observePassword(this, passwordStringObserver);
 
 
+
     public void createUserOnClick(View view) {
         hideButtonShowProgress();
 

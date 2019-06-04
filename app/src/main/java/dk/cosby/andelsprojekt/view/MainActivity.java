@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //Her initialiserer vi de objekter der skal være i viewet
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

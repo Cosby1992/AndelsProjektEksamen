@@ -149,6 +149,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
+    //Metoden tjekker om useren allerede er logget ind
     @Override
     protected void onStart() {
         super.onStart();
