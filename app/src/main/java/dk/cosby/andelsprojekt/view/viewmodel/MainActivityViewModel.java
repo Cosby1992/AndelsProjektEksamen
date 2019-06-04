@@ -12,8 +12,6 @@ public class MainActivityViewModel extends ViewModel {
         firebase = new MainActivityFirebase();
 
 
-
-
     }
 
 

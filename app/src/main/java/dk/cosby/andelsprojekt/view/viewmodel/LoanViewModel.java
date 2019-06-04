@@ -17,8 +17,6 @@ import dk.cosby.andelsprojekt.model.Fond;
 import dk.cosby.andelsprojekt.model.Transaction;
 import dk.cosby.andelsprojekt.model.User;
 
-import static android.support.constraint.Constraints.TAG;
-
 
 /**
  * ViewModel objekt benyttet i LoanActivity.
@@ -27,6 +25,8 @@ import static android.support.constraint.Constraints.TAG;
  * @version 1.0
  */
 public class LoanViewModel extends ViewModel {
+
+    private final String TAG = "LoanViewModel";
 
     //MutableLiveData objecter
     private MutableLiveData<Boolean> userDataObtained = new MutableLiveData<>();
