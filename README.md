@@ -3,23 +3,31 @@
 **Sprog:** Java\
 **Værktøj:** android studio\
 **Minimum sdk version:** 16\
-**Udviklere:** Anders Cosby, Mathias Hansen og Nicklas Bring\
+**Udviklere:** Anders Cosby, Mathias Hansen og Nicklas Bring
+
+-----------------------------------------------------------------------------------------
+
+Version 1.0 af andelsProjekt appen er nu klar.
 
 -----------------------------------------------------------------------------------------
 
 ## Projektet
-I dette projekt skal vi lave en app som er bygget op omkring en ny andelsfond,\
-der gør det nemmere at købe huse i udkatsdanmark.\
-ideen er, at andelsfonden skal finansieres af investorer, mens men\
-samtidig kan optjene en kryptovaluta. Det hele bliver basereret på en simplificeret\
-blockchain teknologi der øger sikkerheden.
+I løbet af vores eksamensperiode har vi løbende opdateret denne readme.md tilhørende andelsprojektet.\
+Projektet er bygget op omkring MVVM software arkitektur med elementer fra arkitekture som The Clean Architekture og DRY.\
+Der er sideløbende med udviklingen blevet udarbejdet en rapport der understøtter udviklingsprocessen.
 
 
 ## Appen 
-I appen vil man kunne oprette en bruger, som entet kan være en investor eller en huskøber.\ 
-Brugeren vil kunne invetere i andelsfonden eller søge et lån til huskøb.\ 
-Det vil også være muligt for brugere at bakke op omkring et projekt,\
-samt optjene sig en ny form for kryptovaluta. 
+Applikationens status ved version 1.0 inkludere følgene features:
+ * Opret bruger (med Firebase auth samt persistering i Firebase Firestore)
+ * login (Med Firebase Auth authentication)
+ * Lån i fon (Pseudo fond i Firebase Firestore)
+ * Investér i fond (Pseudo fond i Firebase Firestore)
+ 
+ Der er klasser til at implementere blockchain funktionalitet til applikationen,\
+ vi har dog ikke nået at implementere denne del endnu (under construction).\
+ Der vil fortsat bliver foretaget forbedringer samt arbejdet på projektet indtil\
+ den 19. juni 2019.
 
 -------------------------------------------------------------------------------------------
 
