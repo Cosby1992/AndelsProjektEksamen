@@ -7,15 +7,16 @@ import dk.cosby.andelsprojekt.model.User;
 
 public class InvestViewModel extends ViewModel {
 
+    //Mutable
     private MutableLiveData<String> currentAmount = new MutableLiveData<>();
     private User user = new User();
     private Transaction transaction;
-    private InvestFirebase firebase;
+    private TransactionFirebase firebase;
 
 
     public InvestViewModel() {
         transaction = new Transaction(user,0);
-        firebase = new InvestFirebase();
+        firebase = new TransactionFirebase();
 
     }
 

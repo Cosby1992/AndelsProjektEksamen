@@ -14,11 +14,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
  * @author Mathias
  * @version 1.0
  */
-public class LoanFirebase {
+public class TransactionFirebase {
 
 
     // no-arg constructor
-    LoanFirebase(){
+    TransactionFirebase(){
 
     }
 

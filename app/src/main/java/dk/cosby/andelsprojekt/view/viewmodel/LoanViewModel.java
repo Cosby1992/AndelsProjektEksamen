@@ -37,7 +37,7 @@ public class LoanViewModel extends ViewModel {
     //model og firebase objekter
     private User user;
     private Fond fond;
-    private LoanFirebase firebase;
+    private TransactionFirebase firebase;
     private Transaction transaction;
 
 
@@ -46,7 +46,7 @@ public class LoanViewModel extends ViewModel {
      */
     public LoanViewModel(){
         user = new User();
-        firebase = new LoanFirebase();
+        firebase = new TransactionFirebase();
         userDataObtained.setValue(false);
         transaction = new Transaction(user, 0);
 
@@ -79,7 +79,7 @@ public class LoanViewModel extends ViewModel {
             transaction.setAmount(Double.valueOf(currentAmount.getValue().toString()));
             transaction.setUser(user);
 
-            //Kalder metode i LoanFirebase
+            //Kalder metode i TransactionFirebase
             firebase.saveTransaktion(transaction).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentReference> task) {
@@ -103,7 +103,7 @@ public class LoanViewModel extends ViewModel {
      */
     public void makePsuedoFondTransaction(){
 
-        //kalder metode i LoanFirebase der returnere en Task<DocumentSnapshot> objekt
+        //kalder metode i TransactionFirebase der returnere en Task<DocumentSnapshot> objekt
         //der lyttes efter hvornår dokumentet bliver returneret
         firebase.getFondRef().get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
