@@ -16,11 +16,11 @@ public interface Addict {
 
     }
 
-    default void onBoolDopeRecieved(){
+    default void onBoolDopeReceived(boolean dope){
 
     }
 
-    default void onBoolArrayDopeRecieved(boolean[] dope){
+    default void onBoolArrayDopeReceived(boolean[] dope){
 
     }
 

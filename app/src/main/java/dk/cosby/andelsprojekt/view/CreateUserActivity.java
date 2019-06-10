@@ -212,7 +212,7 @@ public class CreateUserActivity extends AppCompatActivity implements Addict {
     }
 
     @Override
-            public void onBoolArrayDopeRecieved(boolean[] dope) {
+            public void onBoolArrayDopeReceived(boolean[] dope) {
                 if(dope[0] && !dope[1] && !dope[2]){
                     viewModel.saveUserInFirestore();
                 } else if (dope[0] && dope[1] && !dope[2]) {

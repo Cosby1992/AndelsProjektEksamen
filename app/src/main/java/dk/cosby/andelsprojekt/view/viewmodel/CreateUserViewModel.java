@@ -196,7 +196,7 @@ public class CreateUserViewModel extends ViewModel implements Pusher {
     @Override
     public void pushBoolArrayToAddicts(boolean[] dope) {
         for(Addict addict : addicts){
-            addict.onBoolArrayDopeRecieved(allGoodArray);
+            addict.onBoolArrayDopeReceived(allGoodArray);
         }
     }
 

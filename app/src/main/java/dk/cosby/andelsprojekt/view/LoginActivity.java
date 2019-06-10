@@ -1,7 +1,9 @@
 package dk.cosby.andelsprojekt.view;
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -29,6 +31,8 @@ public class LoginActivity extends AppCompatActivity {
     private TextView sendToCreateUser;
     private Button login;
     private ProgressBar loginProgress;
+
+    private long time = System.currentTimeMillis();
 
 
     @Override
@@ -94,6 +98,38 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        //en observer der holder øje med om login fejler eller ej og opdatere UI derefter.
+        Observer<Boolean> loginObserver = new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean aBoolean) {
+                if(aBoolean){
+                    //login var en succes
+                    Log.d(TAG, "signInWithEmail:success");
+                    Intent mainActivity = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(mainActivity);
+                    finish();
+                } else {
+                    //login fejlede
+                    showLoginButton();
+                    Log.w(TAG, "signInWithEmail:failure");
+                    Toast.makeText(LoginActivity.this, "Login fejlede",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+
+        viewModel.getLoginBool().observe(this, loginObserver);
+
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        if(time + 3000L < System.currentTimeMillis()) {
+            Toast.makeText(LoginActivity.this, "Du kan ikke gå tilbage herfra", Toast.LENGTH_SHORT).show();
+            time = System.currentTimeMillis();
+        }
+
     }
 
     //Laver en knap til create user
@@ -112,31 +148,10 @@ public class LoginActivity extends AppCompatActivity {
         if(viewModel.getCurrentUserEmail().getValue() != null && viewModel.getCurrentUserPassword().getValue() != null) {
             if (!viewModel.getCurrentUserEmail().getValue().isEmpty() && !viewModel.getCurrentUserPassword().getValue().isEmpty()) {
 
-                //Forsøger at logge ind med de tastede værdier, email og password gennem Firebasen.
-                //Hvis den er succesfuld logger den ind og viser mainActivity.
-                //Hvis den fejler kommer der en fejl meddelelse
-                viewModel.login()
-                        .addOnCompleteListener(this, task -> {
-                            if (task.isSuccessful()) {
-                                showLoginButton();
-                                // Sign in success, update UI with the signed-in user's information
-                                Log.d(TAG, "signInWithEmail:success");
+                //prøver at kontakte firebase og logge brugeren ind med de indtastede værdier
+                //for email og password der er gemt i viewmodellen
+                viewModel.login();
 
-                                Intent mainActivity = new Intent(getApplicationContext(), MainActivity.class);
-                                startActivity(mainActivity);
-
-                                //updateUI(user);
-                            } else {
-                                showLoginButton();
-                                // If sign in fails, display a message to the user.
-                                Log.w(TAG, "signInWithEmail:failure", task.getException());
-                                Toast.makeText(LoginActivity.this, "Login fejlede",
-                                        Toast.LENGTH_SHORT).show();
-
-                            }
-
-                            // ...
-                        });
             } else {
                 showLoginButton();
                 Toast.makeText(LoginActivity.this, "Du har ikke udfyldt email eller password feltet.", Toast.LENGTH_SHORT).show();
@@ -148,11 +163,10 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-
     @Override
-    protected void onStart() {
-        super.onStart();
-
+    protected void onDestroy() {
+        super.onDestroy();
+        viewModel.detach();
     }
 
     private void showProgressBar(){
