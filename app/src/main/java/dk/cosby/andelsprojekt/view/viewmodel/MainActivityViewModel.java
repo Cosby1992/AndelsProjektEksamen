@@ -14,6 +14,9 @@ public class MainActivityViewModel extends ViewModel {
 
     }
 
+    public Boolean isUserLoggedIn(){
+        return firebase.isLoggedIn();
+    }
 
     public void makeInvestment(double amount){
         firebase.makeInvestment(amount);

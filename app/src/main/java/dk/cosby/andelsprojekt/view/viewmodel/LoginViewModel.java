@@ -25,10 +25,6 @@ public class LoginViewModel extends ViewModel {
         return firebaseRepository.login(currentUserEmail.getValue(), currentUserPassword.getValue());
     }
 
-    public Boolean isUserLoggedIn(){
-        return firebaseRepository.isLoggedIn();
-    }
-
     public MutableLiveData<String> getCurrentUserEmail() {
         currentUserEmail.setValue(user.getEmailAddress());
         return currentUserEmail;

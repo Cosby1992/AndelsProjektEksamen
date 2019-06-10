@@ -21,8 +21,4 @@ class LoginFirebase {
         return auth.signInWithEmailAndPassword(email, password);
     }
 
-    Boolean isLoggedIn(){
-        return auth.getCurrentUser() != null;
-    }
-
 }

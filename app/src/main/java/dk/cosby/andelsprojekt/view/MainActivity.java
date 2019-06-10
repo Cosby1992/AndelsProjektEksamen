@@ -100,6 +100,14 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (!viewModel.isUserLoggedIn()){
+            Intent loginActivity = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(loginActivity);
+        }
+    }
 
     public void investOnClick(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
