@@ -152,10 +152,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if (viewModel.isUserLoggedIn()){
-            Intent mainActivity = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(mainActivity);
-        }
+
     }
 
     private void showProgressBar(){
