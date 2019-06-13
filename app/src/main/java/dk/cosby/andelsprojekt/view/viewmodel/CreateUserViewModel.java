@@ -3,26 +3,18 @@ package dk.cosby.andelsprojekt.view.viewmodel;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
-import android.support.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-
-import java.util.ArrayList;
 
 import dk.cosby.andelsprojekt.model.User;
 import dk.cosby.andelsprojekt.model.observermodel.Addict;
-import dk.cosby.andelsprojekt.model.observermodel.Pusher;
 
 /**
  * Dette er en ViewModel til CreateUserActivity.
- * CreateUserActivity opdatere CreateUserViewModel som opdatere User.
+ * CreateUserActivity opdaterer CreateUserViewModel som opdaterer User.
  *
  * @version 1.0
  * @author Cosby
  */
-public class CreateUserViewModel extends ViewModel implements Pusher {
+public class CreateUserViewModel extends ViewModel implements Addict {
 
     private final String TAG = "CreateUserViewModel";
 
@@ -31,12 +23,11 @@ public class CreateUserViewModel extends ViewModel implements Pusher {
     private MutableLiveData<String> currentUserPassword = new MutableLiveData<>();
     private MutableLiveData<String> currentUserName = new MutableLiveData<>();
     private MutableLiveData<String> currentUserLastname = new MutableLiveData<>();
+    private MutableLiveData<String> currentUserUsername = new MutableLiveData<>();
 
     private MutableLiveData<Boolean> currentIsEmailValid = new MutableLiveData<>();
     private MutableLiveData<Boolean> currentIsPasswordValid = new MutableLiveData<>();
-
-    private MutableLiveData<Boolean> everythingOk = new MutableLiveData<>();
-    private boolean[] allGoodArray = new boolean[3];
+    private MutableLiveData<Boolean> status = new MutableLiveData<>();
 
     private User user = new User();
     private CreateUserFirebase database = new CreateUserFirebase();
@@ -51,66 +42,21 @@ public class CreateUserViewModel extends ViewModel implements Pusher {
         currentIsEmailValid.setValue(false);
         currentIsPasswordValid.setValue(false);
 
-        everythingOk.setValue(false);
-
         setCurrentUserId("midlertidigt id");
+
+        database.becomeAddict(this);
 
     }
 
     public void createUserAuth(){
-        database.createUserAuth(currentUserEmail.getValue().trim(), currentUserPassword.getValue())
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        allGoodArray[0] = task.isSuccessful();
-                        AuthResult result = task.getResult();
-                        currentUserId.setValue(result.getUser().getUid());
-                        user.setUser_id(currentUserId.getValue());
-                        pushBoolArrayToAddicts(allGoodArray);
-                    }
-                });
+        database.createUserAuth(currentUserEmail.getValue().trim(), currentUserPassword.getValue(), currentUserUsername.getValue().trim(), user);
     }
 
-    public void saveUserInFirestore(){
+    //TODO: lav funktion til firebase updateUserAuth metode
+    //TODO: lav funktion til saveUserInFirebase metode
 
-        user.setUser_id(currentUserId.getValue());
 
-        database.saveUserInFirestore(user, currentUserId.getValue())
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                allGoodArray[1] = task.isSuccessful();
-                pushBoolArrayToAddicts(allGoodArray);
-            }
-        });
-
-    }
-
-    public void updateUserAuth(){
-
-        database.updateUserDisplayNameAuth(currentUserName.getValue(), currentUserLastname.getValue())
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        allGoodArray[2] = task.isSuccessful();
-                        pushBoolArrayToAddicts(allGoodArray);
-                    }
-                });
-    }
-
-    private boolean isAllGood(){
-        boolean result = true;
-        for(Boolean bool : allGoodArray){
-            if(!bool){
-                result = false;
-            }
-        }
-        return result;
-    }
-
-    public MutableLiveData<Boolean> getEverythingOk() {
-        return everythingOk;
-    }
+    //TODO: udtænk en snedig måde at gøre det muligt at forsætte hvor det gik galt i persisteringen
 
     public MutableLiveData<String> getCurrentUserId() {
         currentUserId.setValue(user.getUser_id());
@@ -170,7 +116,14 @@ public class CreateUserViewModel extends ViewModel implements Pusher {
         currentUserName.setValue(user.getName());
     }
 
+    public MutableLiveData<String> getCurrentUserUsername() {
+        return currentUserUsername;
+    }
 
+    public void setCurrentUserUsername(String userUsername) {
+        user.setUsername(userUsername);
+        currentUserUsername.setValue(user.getUsername());
+    }
 
     public MutableLiveData<Boolean> isEmailValid() {
             return currentIsEmailValid;
@@ -180,24 +133,29 @@ public class CreateUserViewModel extends ViewModel implements Pusher {
         return currentIsPasswordValid;
     }
 
-    private ArrayList<Addict> addicts = new ArrayList<>();
+    public MutableLiveData<Boolean> getStatus() {
+        return status;
+    }
 
+    public void setStatus(MutableLiveData<Boolean> status) {
+        this.status = status;
+    }
+
+    public void detach(){
+        database.goToRehab(this);
+    }
+
+
+//////////////////////////////////// overskriver Addict metoder ///////////////////////////////////
 
     @Override
-    public void becomeAddict(Addict addict) {
-        addicts.add(addict);
+    public void shootBool(boolean dope) {
+        status.setValue(dope);
     }
 
     @Override
-    public void goToRehab(Addict addict) {
-        addicts.remove(addict);
-    }
-
-    @Override
-    public void pushBoolArrayToAddicts(boolean[] dope) {
-        for(Addict addict : addicts){
-            addict.onBoolArrayDopeReceived(allGoodArray);
-        }
+    public void shootString(String dope) {
+        setCurrentUserId(dope);
     }
 
     //    public void observeEmail(LifecycleOwner lifeCycleOwner, Observer<String> stringObserver) {

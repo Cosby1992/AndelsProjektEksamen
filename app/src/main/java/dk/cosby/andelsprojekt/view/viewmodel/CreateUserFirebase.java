@@ -1,14 +1,21 @@
 package dk.cosby.andelsprojekt.view.viewmodel;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
-import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
+
+
+import dk.cosby.andelsprojekt.model.User;
+import dk.cosby.andelsprojekt.model.observermodel.Addict;
+import dk.cosby.andelsprojekt.model.observermodel.Pusher;
 
 /**
  * Denne klasse håndtere databaseoperationer der vedrører oprettelse af en bruger
@@ -16,34 +23,24 @@ import com.google.firebase.firestore.FirebaseFirestore;
  * @version 1.0
  * @author Cosby
  */
-public class CreateUserFirebase {
+public class CreateUserFirebase implements Pusher {
 
     private final String TAG = "FIREBASE_REPOSITORY";
 
-    private FirebaseFirestore firestoreDB;
-    private FirebaseAuth auth;
+    private ArrayList<Addict> addicts = new ArrayList<>();
+    private boolean status;
+    private String process;
 
     //no-arg constructor
     public CreateUserFirebase() {
-        firestoreDB = FirebaseFirestore.getInstance();
-        auth = FirebaseAuth.getInstance();
-
     }
 
-    /**
-     * Metode der gemmer et User objekt i Firestore
-     *
-     * @param user bruger der skal gemmes
-     * @return en Task der gør det muligt at reagere på svar fra firestore databasen
-     */
-    public Task<Void> saveUserInFirestore(Object user, String id) {
-        return firestoreDB.collection("users").document(id).set(user);
-    }
+
 //    public Task<Void> writeObjectToFirestore(Object object){
 //        return firestoreDB.collection("users").document(auth.getCurrentUser().getUid()).set(object, SetOptions.merge());
 //    }
 
-
+//TODO: Ret javadoc til den nye kode
     /**
      * Metode der forsøger at oprette en bruger i firebase
      *
@@ -51,37 +48,100 @@ public class CreateUserFirebase {
      * @param password brugerens password
      * @return om brugeren blev oprettet succesfuldt
      */
-    public Task<AuthResult> createUserAuth(String email, String password){
-        return auth.createUserWithEmailAndPassword(email,password);
-    }
+    public void createUserAuth(String email, String password, String username, User user){
 
-    /**
-     * Metode der forsøger at opdatere en Firebase bruger profil
-     *
-     * @param name bruger navn
-     * @param lastname bruger efternavn
-     * @return en Task der gør det reagere på databasens svar
-     */
-    public Task<Void> updateUserDisplayNameAuth(String name, String lastname){
+        FirebaseAuth auth = FirebaseAuth.getInstance();
 
-        String displayName = name.trim() + " " + lastname.trim();
-
-        Log.d(TAG, "UpdateUserAuth: display name is set to " + displayName);
-
-        UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
-                                                .setDisplayName(displayName)
-                                                .build();
-
-        Task<Void> task = auth.getCurrentUser().updateProfile(profileUpdate);
-
-        task.addOnFailureListener(new OnFailureListener() {
+        auth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d(TAG, "UpdateUserAuth(String, String): 'Brugeren profil blev ikke opdateret'");
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()){
+                    updateUserDisplayNameAuth(username, user);
+                } else {
+                    status = false;
+                    pushBoolToAddicts(status);
+                }
             }
         });
 
-        return task;
+    }
+
+
+//TODO: ret javadoc til ny kode
+    /**
+     * Metode der forsøger at opdatere en Firebase bruger profil
+     *
+     * @param username det displaynavn brugeren har angivet
+     */
+    public void updateUserDisplayNameAuth(String username, User user){
+
+        UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
+                                                .setDisplayName(username)
+                                                .build();
+
+        FirebaseAuth.getInstance().getCurrentUser().updateProfile(profileUpdate).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()){
+                    saveUserInFirestore(user);
+                } else {
+                    status = false;
+                    pushBoolToAddicts(status);
+                }
+            }
+        });
+
+    }
+
+    //TODO: ret javadoc til ny kode
+    /**
+     * Metode der gemmer et User objekt i Firestore
+     *
+     * @param user bruger der skal gemmes
+     */
+    public void saveUserInFirestore(User user) {
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+
+        firestore.collection("users").document(firebaseUser.getUid()).set(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()){
+                    status = true;
+                    pushBoolToAddicts(status);
+                } else {
+                    status = false;
+                    pushBoolToAddicts(status);
+                }
+            }
+        });
+
+    }
+
+
+    ///////////////////////// overskriver metoder Pusher interfacet ///////////////////////
+    @Override
+    public void becomeAddict(Addict addict) {
+        addicts.add(addict);
+    }
+
+    @Override
+    public void goToRehab(Addict addict) {
+        addicts.remove(addict);
+    }
+
+    @Override
+    public void pushToAddicts(String dope) {
+        for (Addict addict : addicts) {
+            addict.shootString(dope);
+        }
+    }
+
+    @Override
+    public void pushBoolToAddicts(boolean dope) {
+        for (Addict addict : addicts) {
+            addict.shootBool(dope);
+        }
     }
 
 }

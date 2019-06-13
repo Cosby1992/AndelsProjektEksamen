@@ -9,19 +9,15 @@ package dk.cosby.andelsprojekt.model.observermodel;
 public interface Addict {
 
     default void shoot(){
-
     }
 
-    default void onStringDopeRecieved(String dope){
-
+    default void shootString(String dope){
     }
 
-    default void onBoolDopeReceived(boolean dope){
-
+    default void shootBool(boolean dope){
     }
 
-    default void onBoolArrayDopeReceived(boolean[] dope){
-
+    default void shootBoolArray(boolean[] dope){
     }
 
 

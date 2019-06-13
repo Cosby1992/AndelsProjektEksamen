@@ -22,6 +22,8 @@ public class LoanFirebase {
 
     }
 
+    //TODO: ret således at viewmodel lytter på ændringer i firebase og retter UI accordingly
+
 
     /**
      * @return en Task der returnere en reference til et bruger dokument i firebase

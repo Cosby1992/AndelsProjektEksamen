@@ -24,6 +24,9 @@ import dk.cosby.andelsprojekt.model.User;
  * @author Mathias
  * @version 1.0
  */
+
+//TODO: gør denne klasse til addict og firebase til pusher for at gøre det muligt
+// at viewmodel lytter efter ændringer i firebase og opdatere UI accordingly
 public class LoanViewModel extends ViewModel {
 
     private final String TAG = "LoanViewModel";
@@ -66,6 +69,8 @@ public class LoanViewModel extends ViewModel {
 
     }
 
+
+    //TODO: ret så Firebase ikke er import i denne viewmodel
 
     /**
      * Metode der er ansvarlig for at gemme en transaktion sammen med brugerobjektet i firestore

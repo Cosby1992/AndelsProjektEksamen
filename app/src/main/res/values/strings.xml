@@ -13,6 +13,7 @@
     <string name="frontpage">Forside</string>
     <string name="hint_loan_amount">Indtast lånebeløb</string>
     <string name="btn_loan">Lån</string>
+    <string name="display_navn">Display Navn</string>
 
 
 </resources>

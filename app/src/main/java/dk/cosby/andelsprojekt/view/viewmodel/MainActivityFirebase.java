@@ -33,6 +33,10 @@ public class MainActivityFirebase {
     }
 
 
+    //TODO: gør det muligt at mainActivityViewModel kan lytte på om funktionerne er
+    // succesfulde ved hjælp af Addict og Pusher interfaces. denne klasse gøres til pusher og
+    // viewmodel til addict
+
     public void makeInvestment(double investmentAmount){
 
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import dk.cosby.andelsprojekt.R;
 import dk.cosby.andelsprojekt.view.viewmodel.LoginViewModel;
 
@@ -24,6 +25,7 @@ import dk.cosby.andelsprojekt.view.viewmodel.LoginViewModel;
 
 public class LoginActivity extends AppCompatActivity {
 
+    //////////////////////////////////// Klasse variabler //////////////////////////////////////////
     private static final String TAG = "LoginActivity";
 
     private LoginViewModel viewModel;
@@ -32,6 +34,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button login;
     private ProgressBar loginProgress;
 
+    //denne variabel bliver benyttet i onBackPressed metoden
     private long time = System.currentTimeMillis();
 
 
@@ -50,13 +53,6 @@ public class LoginActivity extends AppCompatActivity {
         sendToCreateUser = (TextView) findViewById(R.id.tv_send_to_create_user);
         login = (Button) findViewById(R.id.btn_login);
         loginProgress = (ProgressBar) findViewById(R.id.pb_login_progress);
-
-        email = findViewById(R.id.tiet_email_login);
-        password = findViewById(R.id.tiet_password_login);
-        sendToCreateUser = findViewById(R.id.tv_send_to_create_user);
-        login = findViewById(R.id.btn_login);
-        loginProgress = findViewById(R.id.pb_login_progress);
-
 
         //En Textwatcher som ændrer email værdien i viewModel når email teksten bliver ændret.
         email.addTextChangedListener(new TextWatcher() {
@@ -122,9 +118,11 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    //Viser en Toast hvis bruger trykker på tilbage knappen imens dette view er aktivt
     @Override
     public void onBackPressed() {
 
+        //Sørger for at Toasten kun kan blive vist med 3 sekunders interval
         if(time + 3000L < System.currentTimeMillis()) {
             Toast.makeText(LoginActivity.this, "Du kan ikke gå tilbage herfra", Toast.LENGTH_SHORT).show();
             time = System.currentTimeMillis();
@@ -132,8 +130,9 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    //Laver en knap til create user
+    //metode der bliver kaldt ved tryk på opret ny bruger
     public void createNewUserButton(View view) {
+        //sender brugeren til CreateUserActivity
         Intent createUserActivity = new Intent(getApplicationContext(), CreateUserActivity.class);
         startActivity(createUserActivity);
     }
@@ -153,28 +152,33 @@ public class LoginActivity extends AppCompatActivity {
                 viewModel.login();
 
             } else {
+                //hvis email- eller passwordfeltet er tomt
                 showLoginButton();
                 Toast.makeText(LoginActivity.this, "Du har ikke udfyldt email eller password feltet.", Toast.LENGTH_SHORT).show();
             }
         } else {
+            //hvis email- eller passwordfeltet har værdien null
             showLoginButton();
             Toast.makeText(LoginActivity.this, "Du har ikke udfyldt email eller password feltet.", Toast.LENGTH_SHORT).show();
         }
 
     }
 
+    //hjemmelavet observer garbage collection
     @Override
     protected void onDestroy() {
         super.onDestroy();
         viewModel.detach();
     }
 
+    //metode der viser en progressbaren og skjuler loginknappen
     private void showProgressBar(){
         loginProgress.setVisibility(View.VISIBLE);
         login.setVisibility(View.GONE);
         sendToCreateUser.setVisibility(View.GONE);
     }
 
+    //metoder der skjuler progressbaren og viser loginknappen
     private void showLoginButton(){
         loginProgress.setVisibility(View.GONE);
         login.setVisibility(View.VISIBLE);

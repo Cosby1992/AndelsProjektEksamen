@@ -17,6 +17,7 @@ public class User implements EmailAndPasswordVerification {
     private String user_id;
     private String name;
     private String lastname;
+    private String username;
     private String emailAddress;
 
 
@@ -25,7 +26,7 @@ public class User implements EmailAndPasswordVerification {
         name = "";
         lastname = "";
         emailAddress = "";
-
+        username = "";
     }
 
     //Constructor (brugt under udvikling)
@@ -94,5 +95,13 @@ public class User implements EmailAndPasswordVerification {
 
     public void setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }
