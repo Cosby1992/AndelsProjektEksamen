@@ -28,6 +28,7 @@ public class CreateUserViewModel extends ViewModel implements Addict {
     private MutableLiveData<Boolean> currentIsEmailValid = new MutableLiveData<>();
     private MutableLiveData<Boolean> currentIsPasswordValid = new MutableLiveData<>();
     private MutableLiveData<Boolean> status = new MutableLiveData<>();
+    private MutableLiveData<Integer> statusInt = new MutableLiveData<>();
 
     private User user = new User();
     private CreateUserFirebase database = new CreateUserFirebase();
@@ -45,6 +46,7 @@ public class CreateUserViewModel extends ViewModel implements Addict {
         setCurrentUserId("midlertidigt id");
 
         database.becomeAddict(this);
+        statusInt.setValue(0);
 
     }
 
@@ -141,6 +143,14 @@ public class CreateUserViewModel extends ViewModel implements Addict {
         this.status = status;
     }
 
+    public MutableLiveData<Integer> getStatusInt() {
+        return statusInt;
+    }
+
+    public void setStatusInt(int statusInt) {
+        this.statusInt.setValue(statusInt);
+    }
+
     public void detach(){
         database.goToRehab(this);
     }
@@ -154,9 +164,11 @@ public class CreateUserViewModel extends ViewModel implements Addict {
     }
 
     @Override
-    public void shootString(String dope) {
-        setCurrentUserId(dope);
+    public void shootInt(int dope) {
+        statusInt.setValue(dope);
     }
+
+    //////////////////////////////// bliver ikke længere benyttet /////////////////////////////////
 
     //    public void observeEmail(LifecycleOwner lifeCycleOwner, Observer<String> stringObserver) {
 //////        currentUserEmail.observe(lifeCycleOwner, stringObserver);

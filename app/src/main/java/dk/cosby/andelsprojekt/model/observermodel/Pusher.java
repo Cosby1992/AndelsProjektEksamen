@@ -19,6 +19,10 @@ public interface Pusher {
 
     }
 
+    default void pushIntToAddicts(int dope){
+
+    }
+
     default void pushBoolToAddicts(boolean dope){
 
     }

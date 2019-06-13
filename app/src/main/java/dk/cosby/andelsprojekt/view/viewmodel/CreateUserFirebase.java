@@ -29,10 +29,11 @@ public class CreateUserFirebase implements Pusher {
 
     private ArrayList<Addict> addicts = new ArrayList<>();
     private boolean status;
-    private String process;
+    private int statusInt;
 
     //no-arg constructor
     public CreateUserFirebase() {
+        statusInt = 0;
     }
 
 
@@ -50,19 +51,27 @@ public class CreateUserFirebase implements Pusher {
      */
     public void createUserAuth(String email, String password, String username, User user){
 
-        FirebaseAuth auth = FirebaseAuth.getInstance();
+        if (statusInt == 0) {
+            FirebaseAuth auth = FirebaseAuth.getInstance();
 
-        auth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()){
-                    updateUserDisplayNameAuth(username, user);
-                } else {
-                    status = false;
-                    pushBoolToAddicts(status);
+            auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        statusInt = 1;
+                        pushIntToAddicts(statusInt);
+                        updateUserDisplayNameAuth(username, user);
+                    } else {
+                        statusInt = 0;
+                        status = false;
+                        pushIntToAddicts(statusInt);
+                        pushBoolToAddicts(status);
+                    }
                 }
-            }
-        });
+            });
+        } else {
+            updateUserDisplayNameAuth(username, user);
+        }
 
     }
 
@@ -75,21 +84,30 @@ public class CreateUserFirebase implements Pusher {
      */
     public void updateUserDisplayNameAuth(String username, User user){
 
-        UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
-                                                .setDisplayName(username)
-                                                .build();
+        if(statusInt == 1) {
+            UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
+                    .setDisplayName(username)
+                    .build();
 
-        FirebaseAuth.getInstance().getCurrentUser().updateProfile(profileUpdate).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()){
-                    saveUserInFirestore(user);
-                } else {
-                    status = false;
-                    pushBoolToAddicts(status);
+            FirebaseAuth.getInstance().getCurrentUser().updateProfile(profileUpdate).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                        statusInt = 2;
+                        pushIntToAddicts(statusInt);
+                        saveUserInFirestore(user);
+                    } else {
+                        statusInt = 1;
+                        status = false;
+                        pushIntToAddicts(statusInt);
+                        pushBoolToAddicts(status);
+                    }
                 }
-            }
-        });
+            });
+
+        } else {
+            saveUserInFirestore(user);
+        }
 
     }
 
@@ -106,11 +124,15 @@ public class CreateUserFirebase implements Pusher {
         firestore.collection("users").document(firebaseUser.getUid()).set(user).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()){
+                if (task.isSuccessful()) {
+                    statusInt = 3;
                     status = true;
+                    pushIntToAddicts(statusInt);
                     pushBoolToAddicts(status);
                 } else {
+                    statusInt = 2;
                     status = false;
+                    pushIntToAddicts(statusInt);
                     pushBoolToAddicts(status);
                 }
             }
@@ -131,9 +153,9 @@ public class CreateUserFirebase implements Pusher {
     }
 
     @Override
-    public void pushToAddicts(String dope) {
+    public void pushIntToAddicts(int dope) {
         for (Addict addict : addicts) {
-            addict.shootString(dope);
+            addict.shootInt(dope);
         }
     }
 

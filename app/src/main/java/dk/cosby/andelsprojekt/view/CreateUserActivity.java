@@ -166,9 +166,26 @@ public class CreateUserActivity extends AppCompatActivity {
                     Intent mainActivity = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(mainActivity);
                 } else {
-                    //Hvis det gik mindre godt, giv brugeren besked
-                    errorCreatingUser("Der skete en fejl under oprettelsen af brugeren", "Fejl ved persistering");
-                    showButtonHideProgress();
+
+                    switch (viewModel.getStatusInt().getValue()){
+                        case 0: errorCreatingUser("Der skete en fejl under oprettelsen " +
+                                "af brugeren. E-mailen findes evt. allerede i databasen. Prøv igen", "Fejl ved persistering ||| " +
+                                "status code 0 ||| brugeren blev ikke gemt i Firebase Auth");
+                            showButtonHideProgress();
+                            break;
+                        case 1: errorCreatingUser("Der skete en fejl under oprettelsen " +
+                                "af brugeren, prøv igen", "Fejl ved persistering ||| " +
+                                "status code 1 ||| brugeren blev gemt i Firebase Auth, men kunne " +
+                                "ikke opdaterer username i Firebase Auth");
+                            showButtonHideProgress();
+                            break;
+                        case 2: errorCreatingUser("Der skete en fejl under oprettelsen " +
+                                "af brugeren, prøv igen", "Fejl ved persistering ||| " +
+                                "status code 2 ||| brugeren blev ikke gemt i Firebase Firestore");
+                            showButtonHideProgress();
+                            break;
+                    }
+
                 }
             }
         };
@@ -237,6 +254,8 @@ public class CreateUserActivity extends AppCompatActivity {
             errorCreatingUser("Password skal indeholde et lille bogstav", "Password indeholder ikke et lille bogstav");
         } else if (!viewModel.isPasswordValid().getValue()){ //hvis password ikke indeholder et tegn eller tal
             errorCreatingUser("Password skal indeholde et tegn eller tal", "Password indeholder ikke et tegn eller tal");
+        } else if(viewModel.getStatusInt().getValue() == 1){
+
         } else { //i alle andre tilfælde
             errorCreatingUser("Dine indtastninger blev ikke godkendt af en ukendt årsag. Prøv venligst igen", "indtasningerne blev ikke godkendt af en ukendt årsag");
         }
@@ -273,8 +292,8 @@ public class CreateUserActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         viewModel.detach();
+        super.onDestroy();
     }
 
 }

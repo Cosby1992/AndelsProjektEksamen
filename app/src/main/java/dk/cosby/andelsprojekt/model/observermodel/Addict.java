@@ -17,6 +17,10 @@ public interface Addict {
     default void shootBool(boolean dope){
     }
 
+    default void shootInt(int dope){
+
+    }
+
     default void shootBoolArray(boolean[] dope){
     }
 
