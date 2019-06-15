@@ -12,7 +12,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
-
 import dk.cosby.andelsprojekt.model.User;
 import dk.cosby.andelsprojekt.model.observermodel.Addict;
 import dk.cosby.andelsprojekt.model.observermodel.Pusher;
@@ -60,7 +59,14 @@ public class CreateUserFirebase implements Pusher {
                     if (task.isSuccessful()) {
                         statusInt = 1;
                         pushIntToAddicts(statusInt);
+
+                        AuthResult result = task.getResult();
+                        if(result.getUser().getUid() != null) {
+                            pushToAddicts(result.getUser().getUid());
+                        }
+
                         updateUserDisplayNameAuth(username, user);
+
                     } else {
                         statusInt = 0;
                         status = false;
@@ -150,6 +156,13 @@ public class CreateUserFirebase implements Pusher {
     @Override
     public void goToRehab(Addict addict) {
         addicts.remove(addict);
+    }
+
+    @Override
+    public void pushToAddicts(String dope) {
+        for (Addict addict : addicts) {
+            addict.shootString(dope);
+        }
     }
 
     @Override

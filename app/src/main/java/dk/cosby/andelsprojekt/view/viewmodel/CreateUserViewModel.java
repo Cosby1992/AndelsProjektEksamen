@@ -158,6 +158,12 @@ public class CreateUserViewModel extends ViewModel implements Addict {
 
 //////////////////////////////////// overskriver Addict metoder ///////////////////////////////////
 
+
+    @Override
+    public void shootString(String dope) {
+        setCurrentUserId(dope);
+    }
+
     @Override
     public void shootBool(boolean dope) {
         status.setValue(dope);
