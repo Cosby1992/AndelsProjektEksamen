@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
     private TextView statusText;
+    private FloatingActionButton fabCreateProject;
 
     private Button loan, invest;
 
@@ -79,11 +81,14 @@ public class MainActivity extends AppCompatActivity {
         loan = (Button) findViewById(R.id.btn_loan);
         invest = (Button) findViewById(R.id.btn_invest);
 
+        fabCreateProject = (FloatingActionButton) findViewById(R.id.fab_main_button);
+
         if(firebaseAuth.getCurrentUser() != null) {
             statusText.setText(firebaseAuth.getCurrentUser().getDisplayName());
         } else {
             statusText.setText("No user logged in");
         }
+
 
 //        final Observer<Double> balanceDoubleObserver = new Observer<Double>() {
 //            @Override
@@ -178,12 +183,21 @@ public class MainActivity extends AppCompatActivity {
 //        builder.show();
     }
 
+    //floating action button onClick
+    public void createNewProject(View view) {
+
+        Toast.makeText(this, "Fab fab fab fab fab fab fab button button button button button", Toast.LENGTH_SHORT).show();
+
+    }
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
     }
+
 
 }
 

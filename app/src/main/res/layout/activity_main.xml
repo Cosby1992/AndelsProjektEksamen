@@ -1,124 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".view.MainActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/colorBackground"
-    android:padding="30dp">
+    android:background="@color/colorBackground">
 
-    <TableLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:stretchColumns="*">
+        android:orientation="vertical"
 
-        <TableRow
+        android:padding="30dp">
+
+        <TableLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:stretchColumns="*">
 
-            <LinearLayout
+            <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_column="0">
+                android:layout_height="match_parent">
+
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="vertical">
-                    <ImageView
-                        android:layout_width="75dp"
-                        android:layout_height="75dp"
-                        android:src="@drawable/user_icon"/>
-                    <TextView
-                        android:id="@+id/tv_status_text"
-                        android:textColor="@color/colorPrimaryWhite"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_column="0">
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="User name"/>
+                        android:gravity="center"
+                        android:orientation="vertical">
+                        <ImageView
+                            android:layout_width="75dp"
+                            android:layout_height="75dp"
+                            android:src="@drawable/user_icon"/>
+                        <TextView
+                            android:id="@+id/tv_status_text"
+                            android:textColor="@color/colorPrimaryWhite"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="User name"/>
+                    </LinearLayout>
                 </LinearLayout>
-            </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:gravity="bottom"
-                android:layout_column="1">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorPrimaryWhite"
-                    android:text="Balance"
-                    android:layout_gravity="right"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="30sp"
-                    android:textColor="@color/colorAccent"
-                    android:layout_gravity="right"
-                    android:text="0.00 AC"/>
-            </LinearLayout>
-
-
-        </TableRow>
-
-        <TableRow android:layout_marginTop="5dp">
-            <FrameLayout android:layout_height="3dp"
-                android:layout_width="match_parent"
-                android:layout_column="0"
-                android:background="@color/colorPrimary">
-            </FrameLayout>
-            <FrameLayout android:layout_height="3dp"
-                android:layout_width="match_parent"
-                android:layout_column="1"
-                android:background="@color/colorPrimary">
-            </FrameLayout>
-        </TableRow>
-
-    </TableLayout>
-
-    <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:stretchColumns="*">
-
-        <TableRow>
-            <Button android:id="@+id/btn_invest"
-                android:onClick="investOnClick"
-                android:text="Investér"
-                android:layout_margin="10dp"
-                android:background="@color/colorAccent"
-                android:layout_column="0"/>
-
-            <Button android:id="@+id/btn_loan"
-                android:onClick="loanOnClick"
-                android:text="@string/btn_loan"
-                android:layout_margin="10dp"
-                android:background="@color/colorAccent"
-                android:layout_column="1"/>
-        </TableRow>
-
-    </TableLayout>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Projekter"
-        android:textColor="@color/colorPrimaryWhite"
-        android:layout_marginTop="20dp"
-        android:textSize="30sp"
-        android:gravity="center"/>
-
-    <ListView
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="bottom"
+                    android:layout_column="1">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorPrimaryWhite"
+                        android:text="Balance"
+                        android:layout_gravity="right"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="30sp"
+                        android:textColor="@color/colorAccent"
+                        android:layout_gravity="right"
+                        android:text="0.00 AC"/>
+                </LinearLayout>
 
 
+            </TableRow>
 
-</LinearLayout>
+            <TableRow android:layout_marginTop="5dp">
+                <FrameLayout android:layout_height="3dp"
+                    android:layout_width="match_parent"
+                    android:layout_column="0"
+                    android:background="@color/colorPrimary">
+                </FrameLayout>
+                <FrameLayout android:layout_height="3dp"
+                    android:layout_width="match_parent"
+                    android:layout_column="1"
+                    android:background="@color/colorPrimary">
+                </FrameLayout>
+            </TableRow>
+
+        </TableLayout>
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:stretchColumns="*">
+
+            <TableRow>
+                <Button android:id="@+id/btn_invest"
+                    android:onClick="investOnClick"
+                    android:text="Investér"
+                    android:layout_margin="10dp"
+                    android:background="@color/colorAccent"
+                    android:layout_column="0"/>
+
+                <Button android:id="@+id/btn_loan"
+                    android:onClick="loanOnClick"
+                    android:text="@string/btn_loan"
+                    android:layout_margin="10dp"
+                    android:background="@color/colorAccent"
+                    android:layout_column="1"/>
+            </TableRow>
+
+        </TableLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Projekter"
+            android:textColor="@color/colorPrimaryWhite"
+            android:layout_marginTop="20dp"
+            android:textSize="30sp"
+            android:gravity="center"/>
+
+        <ListView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_main_button"
+            android:onClick="createNewProject"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_margin="16dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/plus" />
+    </LinearLayout>
+
+
+</ScrollView>

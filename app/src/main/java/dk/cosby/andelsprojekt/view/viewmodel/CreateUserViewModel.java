@@ -54,12 +54,6 @@ public class CreateUserViewModel extends ViewModel implements Addict {
         database.createUserAuth(currentUserEmail.getValue().trim(), currentUserPassword.getValue(), currentUserUsername.getValue().trim(), user);
     }
 
-    //TODO: lav funktion til firebase updateUserAuth metode
-    //TODO: lav funktion til saveUserInFirebase metode
-
-
-    //TODO: udtænk en snedig måde at gøre det muligt at forsætte hvor det gik galt i persisteringen
-
     public MutableLiveData<String> getCurrentUserId() {
         currentUserId.setValue(user.getUser_id());
         return currentUserId;
@@ -104,8 +98,6 @@ public class CreateUserViewModel extends ViewModel implements Addict {
         user.setLastname(userLastname);
         currentUserPassword.setValue(user.getLastname());
     }
-
-
 
     public MutableLiveData<String> getCurrentUserName() {
         currentUserName.setValue(user.getName());
