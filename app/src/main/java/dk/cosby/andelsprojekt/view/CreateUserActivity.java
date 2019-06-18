@@ -15,10 +15,8 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import java.util.EmptyStackException;
 import java.util.regex.Pattern;
 import dk.cosby.andelsprojekt.R;
-import dk.cosby.andelsprojekt.model.observermodel.Addict;
 import dk.cosby.andelsprojekt.view.viewmodel.CreateUserViewModel;
 
 /**
@@ -254,8 +252,6 @@ public class CreateUserActivity extends AppCompatActivity {
             errorCreatingUser("Password skal indeholde et lille bogstav", "Password indeholder ikke et lille bogstav");
         } else if (!viewModel.isPasswordValid().getValue()){ //hvis password ikke indeholder et tegn eller tal
             errorCreatingUser("Password skal indeholde et tegn eller tal", "Password indeholder ikke et tegn eller tal");
-        } else if(viewModel.getStatusInt().getValue() == 1){
-
         } else { //i alle andre tilfælde
             errorCreatingUser("Dine indtastninger blev ikke godkendt af en ukendt årsag. Prøv venligst igen", "indtasningerne blev ikke godkendt af en ukendt årsag");
         }
@@ -280,6 +276,7 @@ public class CreateUserActivity extends AppCompatActivity {
     private void showButtonHideProgress(){
         opretBrugerProgressbar.setVisibility(View.GONE);
         createUserButton.setVisibility(View.VISIBLE);
+
     }
 
 

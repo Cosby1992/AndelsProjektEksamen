@@ -167,8 +167,8 @@ public class LoginActivity extends AppCompatActivity {
     //hjemmelavet observer garbage collection
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         viewModel.detach();
+        super.onDestroy();
     }
 
     //metode der viser en progressbaren og skjuler loginknappen

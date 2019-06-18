@@ -49,7 +49,7 @@ public class MainActivityFirebase {
                     docRef.set(fond, SetOptions.merge()).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Log.d(TAG, "makeInvestment: 'failure' investement failed");
+                            Log.d(TAG, "makeInvestment: 'failure' investement failed" + e.getMessage());
                         }
                     });
                 } else {
@@ -57,6 +57,7 @@ public class MainActivityFirebase {
                 }
             }
         });
+
     }
 
     public void makeLoan(double loanAmount){

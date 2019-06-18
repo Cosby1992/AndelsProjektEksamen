@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 
 import dk.cosby.andelsprojekt.R;
+import dk.cosby.andelsprojekt.model.User;
 import dk.cosby.andelsprojekt.view.viewmodel.MainActivityViewModel;
 
 /**
@@ -72,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        statusText = findViewById(R.id.tv_status_text);
+        statusText = (TextView) findViewById(R.id.tv_status_text);
 
         viewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
 
@@ -102,7 +103,6 @@ public class MainActivity extends AppCompatActivity {
 //
 //        viewModel.observeCurrentAccountBalance(this, balanceDoubleObserver);
 
-
     }
 
     @Override
@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
         builder.setTitle("Investér");
 
 // Set up the input
-        final EditText input = new EditText(getBaseContext());
+        EditText input = new EditText(getBaseContext());
 // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
         input.setInputType(InputType.TYPE_CLASS_NUMBER);
         input.setHint("Beløb til overførsel");
@@ -136,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
                 } else dialog.cancel();
             }
         });
+
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -186,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
     //floating action button onClick
     public void createNewProject(View view) {
 
-        Toast.makeText(this, "Fab fab fab fab fab fab fab button button button button button", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Fab button", Toast.LENGTH_SHORT).show();
 
     }
 

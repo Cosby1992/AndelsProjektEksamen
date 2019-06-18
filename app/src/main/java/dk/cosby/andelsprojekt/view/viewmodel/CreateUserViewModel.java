@@ -31,7 +31,7 @@ public class CreateUserViewModel extends ViewModel implements Addict {
     private MutableLiveData<Integer> statusInt = new MutableLiveData<>();
 
     private User user = new User();
-    private CreateUserFirebase database = new CreateUserFirebase();
+    private CreateUserFirebase firebase = new CreateUserFirebase();
 
     public CreateUserViewModel() {
 
@@ -45,13 +45,13 @@ public class CreateUserViewModel extends ViewModel implements Addict {
 
         setCurrentUserId("midlertidigt id");
 
-        database.becomeAddict(this);
+        firebase.becomeAddict(this);
         statusInt.setValue(0);
 
     }
 
     public void createUserAuth(){
-        database.createUserAuth(currentUserEmail.getValue().trim(), currentUserPassword.getValue(), currentUserUsername.getValue().trim(), user);
+        firebase.createUserAuth(currentUserEmail.getValue().trim(), currentUserPassword.getValue(), currentUserUsername.getValue().trim(), user);
     }
 
     public MutableLiveData<String> getCurrentUserId() {
@@ -144,7 +144,7 @@ public class CreateUserViewModel extends ViewModel implements Addict {
     }
 
     public void detach(){
-        database.goToRehab(this);
+        firebase.goToRehab(this);
     }
 
 

@@ -2,6 +2,8 @@ package dk.cosby.andelsprojekt.model;
 
 import java.util.regex.Pattern;
 
+import dk.cosby.andelsprojekt.model.observermodel.Pusher;
+
 /**
  * Denne klasse indeholder al brugerinformation samt en constructor til at oprette brugere.
  *
